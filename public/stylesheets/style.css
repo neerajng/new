@@ -1,0 +1,31 @@
+#container{
+    display: flex;
+    flex-direction: column;
+    margin: auto;    
+    margin-top: 50px;    
+    align-content:center;
+    align-items: center;
+    width: 40vw;
+    height: 500px;
+    background-color:#CDA8F1;
+    border-style: solid;
+    border-color: black;
+    border-radius: 50px;
+    color: rgb(22, 21, 21);
+}
+
+#admincontainer{
+    display: flex;
+    flex-direction: column;
+    margin: auto;    
+    margin-top: 50px;    
+    align-content:center;
+    align-items: center;
+    width: 40vw;
+    height: 500px;
+    background-color:#C9F08E;
+    border-style: solid;
+    border-color: black;
+    border-radius: 50px;
+    color: rgb(22, 21, 21);
+}
