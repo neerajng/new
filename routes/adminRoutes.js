@@ -1,21 +1,10 @@
 const router= require('express').Router();
-const {getLogin,postLogin} = require('../controllers/adminController');
+const {getLogin,postLogin, getPanel} = require('../controllers/adminController');
+const {checkNotAuthenticated,checkAuthenticated}=require('../middlewares/admin_auth_mware')
 
 router.route('/login').get(checkNotAuthenticated,getLogin).post(checkNotAuthenticated,postLogin)
-
-function checkAuthenticated(req,res,next){
-    if(req.isAuthenticated()){
-        return next()
-    }
-    res.redirect('/admin/login')
-}
+router.route('/').get(checkAuthenticated,getPanel)
 
 
-function checkNotAuthenticated(req,res,next){
-    if(req.isAuthenticated()){
-        return res.redirect('/admin/')
-    }
-    next();
-}
 
 module.exports = router;

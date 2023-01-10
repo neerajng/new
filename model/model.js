@@ -6,14 +6,10 @@ const signupSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
-    lastName: {
-        type: String,
-        required: false,
-    },
     email: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
     },
     phone: {
       type: String,
@@ -23,25 +19,24 @@ const signupSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-    }
+    },
 })
 signupSchema.plugin(passportLocalMongoose);
 
-const loginSchema = new mongoose.Schema({
+const adminScema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true
   },
   password: {
     type: String,
     required: true,
 }
 
-})    
+}) 
 
 
 const Signup = mongoose.model('Signup', signupSchema);
-const Login = mongoose.model('Login', loginSchema);
+const Admin = mongoose.model('Admin', adminScema);
 
-module.exports={Signup,Login};
+module.exports={Signup,Admin};

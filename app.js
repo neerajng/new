@@ -5,16 +5,18 @@ const express=require("express");
 const app=express();
 const hbs = require('express-handlebars');
 const path = require('path');
-const connectDB=require('./db/connect')
+const connectDB=require('./middlewares/connect')
 const userRoutes=require("./routes/userRoutes")
 const adminRoutes=require("./routes/adminRoutes")
 const passport=require('passport');
 const flash=require('express-flash');
 const session = require('express-session');
 const methodOverride = require('method-override');
+const bodyParser = require('body-parser');
 
 //middlewares
 app.use(express.json())
+app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: false }));
 app.use(flash())
@@ -39,7 +41,7 @@ app.engine( 'hbs', hbs.engine({
 );
 
 //routes
-app.use('/user',userRoutes)
+app.use('/',userRoutes)
 app.use('/admin',adminRoutes)
 
   
