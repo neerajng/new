@@ -1,0 +1,33 @@
+<div class="vh-100 m-0" >
+<h1 class="m-4 text-primary">User Management</h1>
+<table class="table table-striped text-center" id="datatable">
+  <thead>
+    <tr>
+      <th scope="col">First Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each users}}
+    <tr>
+      <td>{{firstname}}</td>
+      <td>{{lastname}}</td>
+      <td>{{email}}</td>
+      <td>{{phone}}</td>
+      <td>
+        {{#if isBlocked}}
+<button class="btn block btn-success px-4 " id="block" data-url={{_id}}>Unblock</button>
+        {{else}}
+<button class="btn block btn-danger px-4 " id="block" data-url={{_id}}>Block</button>
+        {{/if}}        
+      </td> 
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+</div>
+<script src="/javascript/blockUser.js"></script> 
+

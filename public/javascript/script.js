@@ -56,7 +56,7 @@ var err = document.querySelector('#error_L')
 var text;
 
 if(email === '' || email.match(mailformat) === null){
-    text = "Please enter a valid Email";
+    text = "Please enter a valid Email/You have been blocked";
     err.textContent = text;
     err.style.height = '2rem';
     return false;
@@ -71,10 +71,10 @@ if(email === '' || email.match(mailformat) === null){
 
 }
 
-function adminlogin(){
-
+function adminlogin(){    
     var email = document.getElementById("email").value
     var passord = document.getElementById("password").value
+    var err = document.querySelector('#error_L')
 
     if(email !== 'neerajng@gmail.com' || passord !=="admin"){
     var text = "Incorrect Admin Credentials";

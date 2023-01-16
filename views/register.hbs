@@ -1,0 +1,39 @@
+
+
+  <div id="container">
+    <h1 class="mt-4 mb-4">Sign Up</h1>
+    <div>
+    <form id="signup" action="/register" onsubmit="return signup()"method="post">        
+        <div class="row mb-4">
+        <div class="col">
+        <input type="text" name="fname" id="fname" class="form-control" placeholder="First name">
+        </div>
+        <div class="col">
+        <input type="text" name="lname" id="lname" class="form-control" placeholder="Last name">
+        </div>        
+        </div>
+        <div class="row mb-4">
+        <input type="text" name="email" id="email" class="form-control" placeholder="Email">
+        </div>
+        <div class="row mb-4">
+        <input type="text" name="phone" id="phone" class="form-control" placeholder="Phone">
+        </div>
+        <div class="row mb-4">
+        <input type="password" name="password" id="password"class="form-control" placeholder="Password">
+        </div>
+        <div class="row mb-3">
+        <input type="submit" id="submit" class="btn btn-success" value="Register">
+        </div>
+        <div class="row px-auto">
+        {{#if message}} 
+        <b id="error_S" class="text-danger">{{message}}</b>
+        {{else}}
+        <b id="error_S" class="text-danger"></b>
+        {{/if}}
+        </div>
+        <div class="row mx-auto">
+        <b class="px-5 mx-5 mt-2">Already have an account?  <span><a href="/login">Login</a></span></b>
+        </div>
+    </form>
+    </div>
+  </div>

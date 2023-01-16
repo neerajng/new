@@ -3,16 +3,13 @@
   <div id="admincontainer">
     <h1 class="mt-5 mb-4 ">Admin Log In</h1>
     <div>
-    <form id="login" action="/admin/login" onsubmit="return adminlogin()" method="post">        
+    <form id="login" onsubmit="return adminlogin()" action="/admin/login" method="post">        
        
         <div class="row mb-4">
-        <input type="text" name="admin_email" id="email" class="form-control" placeholder="Email">
+        <input type="text" name="email" id="email" class="form-control" placeholder="Email">
         </div>
         <div class="row mb-4">
         <input type="password" name="password" id="password" class="form-control" placeholder="Password">
-        </div>
-        <div class="row mb-4 d-flex flex-row-reverse">
-        <a href="#">Forgot Password</a>
         </div>
         <div class="row mb-4">
         <input type="submit" id="submit" class="btn btn-success" value="Login">

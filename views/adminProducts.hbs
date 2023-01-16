@@ -1,1 +1,54 @@
-<h1>adminProducts</h1>
+<div class="container mx-auto d-flex justify-content-between">
+<h1 class="ms-0">Products Management Page</h1>
+<div class="mt-5">
+<a class="btn btn-success" href="/admin/addproduct">Add Product</a>
+</div>
+</div>
+<div class="container vh-100% mx-auto">
+<table class="table align-middle text-center mt-4" id="datatable">
+  <thead class="bg-dark text-light">
+    <tr>
+      <th style="width: 16.66%">Product</th>
+      <th style="width: 16.66%">Price</th>
+      <th style="width: 16.66%;">Image</th>
+      <th style="width: 16.66%">Category</th>
+      <th style="width: 16.66%">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each productList}}
+    <tr>
+      <td><p class="mx-0 mb-1">{{name}}</p></td>  
+      <td>{{price}}</td>
+
+      <td>
+        <div class="d-flex align-items-center">
+          <img
+              src="{{image}}"
+              alt=""
+              style="width: 45px; height: 45px; display: block; margin-left: auto; margin-right: auto;"
+              class="rounded"
+              />          
+        </div>
+      </td>
+      
+      <td>
+        <p class="mx-0 mb-1">{{category.name}}</p>
+      </td>
+      
+      <td class="text-center ">
+         <ul class="mx-4 d-flex flex-row" style="list-style-type: none;">      
+        <li class="px-lg-3">
+          <a class="btn btn-primary text-white px-4" href="updateproduct">Edit</a>
+        </li>
+        <li class="px-lg-3">
+          <a class="btn btn-danger text-white delete-prod" data-url={{_id}}>Delete</a>
+        </li>
+      </ul>
+      </td>
+    </tr>    
+    {{/each}}
+  </tbody>
+</table>
+</div>
+<script src="/javascript/deleteProduct.js"></script> 

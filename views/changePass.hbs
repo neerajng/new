@@ -1,0 +1,16 @@
+<div id="container" class="py-5">
+    <h1 class="mt-5 mb-4">Change your password</h1>
+    <div>
+        <form id="otp" action="/changepass" method="post">        
+        <div class="row mb-4">
+        <input type="text" id="password" name="password" class="form-control" placeholder="New Password">
+        </div>
+        <div class="row mb-3">
+        <input type="submit" id="submit" class="btn btn-success" value="Submit">
+        </div>
+        <div class="row px-auto">
+        <b style="line-height:2rem" id="err" class="text-danger">{{message}}</b>
+        </div>
+    </div>    
+    </div>
+  </div>

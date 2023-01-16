@@ -1,33 +1,21 @@
-if(process.env.NODE_ENV !== 'production'){
-  require('dotenv').config();
-}
-const express=require("express");
-const app=express();
-const hbs = require('express-handlebars');
-const path = require('path');
-const connectDB=require('./middlewares/connect')
-const userRoutes=require("./routes/userRoutes")
-const adminRoutes=require("./routes/adminRoutes")
-const passport=require('passport');
-const flash=require('express-flash');
-const session = require('express-session');
-const methodOverride = require('method-override');
-const bodyParser = require('body-parser');
+const express=require("express")
+const session = require('express-session')
+const userRouter=require("./routes/userRouter")
+const adminRouter=require("./routes/adminRouter")
+const connectDB=require('./config/connect')
+const MongoStore = require('connect-mongo');
+const hbs = require('express-handlebars')
+const path = require('path')
+const Handlebars = require('handlebars')
+const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access')
+const multer = require("multer");
+require('dotenv').config()
 
-//middlewares
-app.use(express.json())
-app.use(bodyParser.json())
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.urlencoded({ extended: false }));
-app.use(flash())
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false ,
-    saveUninitialized:false,
-}));
-app.use(passport.initialize())
-app.use(passport.session())
-app.use(methodOverride('_method'));
+const app=express()
+
+const port=process.env.PORT || 3000;
+const oneDay = 60*60*24*1000
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -37,16 +25,33 @@ app.set('view engine', 'hbs');
 app.engine( 'hbs', hbs.engine({
   extname: 'hbs',
   defaultLayout: 'main',
+  handlebars: allowInsecurePrototypeAccess(Handlebars),
   })
 );
 
-//routes
-app.use('/',userRoutes)
-app.use('/admin',adminRoutes)
+app.use(function(req, res, next) {
+  res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
+  next()
+})
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }));
 
-  
 
-const port=3000;
+// const sessionStore= MongoStore.create({
+//   mongoUrl:process.env.MONGO_URI,
+//   dbName:'Shopwine',
+//   collectionName:'sessions'
+// })
+
+
+
+app.use(session({
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {maxAge: oneDay},
+}))
 
 const start= async () => {
   try{
@@ -59,3 +64,7 @@ const start= async () => {
 }
 
 start();
+
+//routes
+app.use('/',userRouter)
+app.use('/admin',adminRouter)
