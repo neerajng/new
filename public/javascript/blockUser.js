@@ -1,4 +1,3 @@
-
 let datatable= document.getElementById("datatable")
 if(datatable){
     console.log("working1")

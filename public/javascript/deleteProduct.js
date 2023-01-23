@@ -1,4 +1,3 @@
-
 let datatable= document.getElementById("datatable")
 if(datatable){
     console.log("working100")
@@ -21,7 +20,7 @@ async function deleteprod(e){
     const id=`${data}`
 
     fetch(url,{
-        method:'DELETE',
+        method:'PUT',
         headers: {
             'Content-Type': 'application/json'
         },

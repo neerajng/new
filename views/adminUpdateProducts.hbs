@@ -1,39 +1,43 @@
 <div class="conatiner mx-5 vh-auto ps-5 mt-2 mb-5 ">
 <h1>Update Product Details</h1>
-  
-<form action="/products/edit/{{_id}}" method="put" enctype="multipart/form-data">
+
+<form id="updateForm" >
   
 <div class="form-group col-md-6 mt-3">
     <label for="productname">Product Name</label>
-    <input type="text" class="form-control" name="name" id="productname" placeholder="Product">
+    <input value="{{product.name}}" type="text" class="form-control" name="name" id="productname" placeholder="Product">
 </div>
 <div class="form-group col-md-6 mt-3">
     <label for="price">Price</label>
-    <input type="text" class="form-control" name="price" id="price" placeholder="Price">
+    <input value="{{product.price}}" type="text" class="form-control" name="price" id="price" placeholder="Price">
 </div>
   
   <div class="form-group col-md-6 mt-3">
     <p for="fileName" class="">Image</p>
     <input type="file" class="form-control-file" name="fileName" id="fileName">
+    <img src="{{product.image}}" alt="image" style="width:100px;height:auto">
   </div>
 
   <div class="form-row">
     <div class="form-group col-md-6 mt-3">
       <label for="description">Description</label>
-      <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+      <textarea class="form-control" name="description" id="description" rows="3">{{product.description}}</textarea>
     </div>
     
     <div class="form-group col-md-4 mt-3">
       <label for="inputCat">Category</label>
       <select id="inputCat" class="form-control" name="category">
-        <option value="value" selected>Choose...</option>
-        {{#each category}}
-        <option class="text-success" value="{{_id}}" name="category">{{name}}</option>
-        {{/each}}
+        <option value="value">Choose...</option>
+        {{#each categories}} 
+        {{!-- <option value="{{this._id}}" {{#if this._id}}selected{{/if}}>{{#if (eq this.name ../product.category.name)}}hi{{else}}hoy{{/if}}</option>  --}}
+        {{!-- <option value="{{this._id}}" >{{this._id}}--{{../product.category._id}}</option> --}}
+        <option value="{{this._id}}" {{#if (eq ../product.category.id this.id)}}selected{{/if}}>{{this.name}}</option>
+        {{/each}}        
       </select>
     </div>    
   </div>
-  <button type="submit" class="btn btn-primary mt-4 px-5 btn-warning">Update</button>
+  <button type='submit' data-url={{product._id}} class="btn mt-4 px-5 btn-warning update-prod">Update</button>
 </form>
-
+<h1>{{message}}</h1>
 </div>
+<script src="/javascript/updateProduct.js"></script> 

@@ -1,21 +1,23 @@
-<div class="container mx-auto d-flex justify-content-between">
+{{> adminSidebar products='products'}}
+<div class="vh-100">
+<div class="container me-0 d-flex justify-content-between">
 <h1 class="ms-0">Products Management Page</h1>
-<div class="mt-5">
+<div class="mt-5 me-5 mb-2">
 <a class="btn btn-success" href="/admin/addproduct">Add Product</a>
 </div>
 </div>
-<div class="container vh-100% mx-auto">
-<table class="table align-middle text-center mt-4" id="datatable">
-  <thead class="bg-dark text-light">
-    <tr>
-      <th style="width: 16.66%">Product</th>
-      <th style="width: 16.66%">Price</th>
-      <th style="width: 16.66%;">Image</th>
-      <th style="width: 16.66%">Category</th>
-      <th style="width: 16.66%">Action</th>
+<div class="container me-0">
+<table class="table align-middle text-center" id="datatable">
+  <thead class="">
+    <tr class="text-center">
+      <th style="width: 20%">Product</th>
+      <th style="width: 20%">Price</th>
+      <th style="width: 20%">Image</th>
+      <th style="width: 20%">Category</th>
+      <th >Action</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody class="table-success">
     {{#each productList}}
     <tr>
       <td><p class="mx-0 mb-1">{{name}}</p></td>  
@@ -37,13 +39,40 @@
       </td>
       
       <td class="text-center ">
-         <ul class="mx-4 d-flex flex-row" style="list-style-type: none;">      
+
+      <ul class="mx-4 d-flex flex-row" style="list-style-type: none;"> 
+
         <li class="px-lg-3">
-          <a class="btn btn-primary text-white px-4" href="updateproduct">Edit</a>
+          <a class="btn btn-primary text-white px-4" href="http://localhost:3000/admin/updateproduct/{{_id}}">Edit</a>
         </li>
+
         <li class="px-lg-3">
-          <a class="btn btn-danger text-white delete-prod" data-url={{_id}}>Delete</a>
+          {{#if isBlocked}}
+          <!-- Button trigger modal -->
+          <a class="btn btn-success text-white px-4" data-bs-toggle="modal" data-bs-target="#{{_id}}">Add</a><!---Delete-->
+          {{else}}
+          <a class="btn btn-danger text-white" data-bs-toggle="modal" data-bs-target="#{{_id}}">Delete</a><!---Delete-->
+          {{/if}}
+          <!-- Modal -->
+          <div class="modal fade" id="{{_id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered ">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  Are you sure you want to proceed?
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-success delete-prod px-3" data-url={{_id}}>OK</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </li>
+
       </ul>
       </td>
     </tr>    
@@ -51,4 +80,6 @@
   </tbody>
 </table>
 </div>
+</div>
+{{> dataTable}}
 <script src="/javascript/deleteProduct.js"></script> 

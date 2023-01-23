@@ -22,6 +22,10 @@ const productSchema=new mongoose.Schema({
       ref:'Category',
       required: true
     },
+    isBlocked: { 
+      type: Boolean, 
+      default: false 
+    }
   })  
   
   const Product = mongoose.model('Product', productSchema);

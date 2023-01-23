@@ -26,8 +26,19 @@ app.engine( 'hbs', hbs.engine({
   extname: 'hbs',
   defaultLayout: 'main',
   handlebars: allowInsecurePrototypeAccess(Handlebars),
+  helpers:{
+    eq:function(a,b){
+      if (a === b) {
+        return true;
+      }
+      return false;
+    }
+  }
   })
 );
+hbs.create().getPartials().then(function (partials) {})
+
+
 
 app.use(function(req, res, next) {
   res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
@@ -38,11 +49,11 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }));
 
 
-// const sessionStore= MongoStore.create({
-//   mongoUrl:process.env.MONGO_URI,
-//   dbName:'Shopwine',
-//   collectionName:'sessions'
-// })
+const sessionStore= MongoStore.create({
+  mongoUrl:process.env.MONGO_URI,
+  dbName:'Shopwine',
+  collectionName:'sessions'
+})
 
 
 
@@ -51,6 +62,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {maxAge: oneDay},
+    store:sessionStore
 }))
 
 const start= async () => {

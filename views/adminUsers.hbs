@@ -1,7 +1,8 @@
-<div class="vh-100 m-0" >
-<h1 class="m-4 text-primary">User Management</h1>
-<table class="table table-striped text-center" id="datatable">
-  <thead>
+{{> adminSidebar users='users'}}
+<div class="container me-0 vh-100 pb-0" >
+<h1 class="pt-3">User Management</h1>
+<table class="table text-center " id="datatable">
+  <thead >
     <tr>
       <th scope="col">First Name</th>
       <th scope="col">Last Name</th>
@@ -10,7 +11,7 @@
       <th scope="col">Action</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody class="table-success">
     {{#each users}}
     <tr>
       <td>{{firstname}}</td>
@@ -19,15 +20,37 @@
       <td>{{phone}}</td>
       <td>
         {{#if isBlocked}}
-<button class="btn block btn-success px-4 " id="block" data-url={{_id}}>Unblock</button>
+<!-- Button trigger modal -->
+<button class="btn btn-success px-4" data-bs-toggle="modal" data-bs-target="#{{_id}}">Unblock</button>
         {{else}}
-<button class="btn block btn-danger px-4 " id="block" data-url={{_id}}>Block</button>
-        {{/if}}        
+<!-- Button trigger modal -->
+<button class="btn btn-danger px-4" data-bs-toggle="modal" data-bs-target="#{{_id}}">Block</button>
+        {{/if}}
+<!-- Modal -->
+          <div class="modal fade" id="{{_id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered ">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  Are you sure you want to proceed?
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-success block px-3" data-url={{_id}}>OK</button>
+                </div>
+              </div>
+            </div>
+          </div>        
       </td> 
     </tr>
     {{/each}}
-  </tbody>
+  </tbody>  
 </table>
 </div>
-<script src="/javascript/blockUser.js"></script> 
+{{> dataTable}}
+<script src="/javascript/blockUser.js"></script>
+
 

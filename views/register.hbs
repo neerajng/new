@@ -1,6 +1,6 @@
 
 
-  <div id="container">
+  {{!-- <div id="container">
     <h1 class="mt-4 mb-4">Sign Up</h1>
     <div>
     <form id="signup" action="/register" onsubmit="return signup()"method="post">        
@@ -36,4 +36,56 @@
         </div>
     </form>
     </div>
+  </div> --}}
+  
+<section class="vh-100%">
+  <div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6 ">
+      <form id="signup" action="/register" onsubmit="return signup()" method="post" class="mt-4 mx-5 px-5" >
+       <h3 class="fw-bold text-black mb-3 pb-3" style="letter-spacing: 1px;">SignUp for Free</h3>
+        <div class="form-group row my-3">
+          <div class="col-sm-6">
+            <input type="text" name="fname" id="fname" class="form-control" placeholder="Enter first name">
+          </div>
+          <div class="col-sm-6">
+            <input type="text" name="lname" id="lname" class="form-control" placeholder="Enter last name">
+          </div>
+        </div>
+        <div class="form-group my-3">
+          <input type="text" name="email" id="email" class="form-control" placeholder="Enter email">
+        </div>
+        <div class="form-group my-3">
+          <input type="text" name="phone" id="phone" class="form-control" placeholder="Enter phone number">
+        </div>
+        <div class="form-group my-3">
+          <input type="password" name="password1" id="password1"class="form-control" placeholder="Enter password">
+        </div>
+        <div class="form-group my-3">
+          <input type="password" name="password2" id="password2"class="form-control" placeholder="Confirm password">
+        </div>
+        <input type="submit" id="submit" class="btn btn-success mt-2" value="Register">
+        <div class="row px-auto mt-3">
+        {{#if message}} 
+        <b id="error_S" class="text-danger">{{message}}</b>
+        {{else}}
+        <b id="error" class="text-danger"></b>
+        {{/if}}
+        </div>
+        <div class="row px-auto">
+        <p class="mt-4">Already have an account?  <span><a href="/login" class="link-info">Login</a></span></p>
+        </div>
+      </form>
+    </div>
+    
+    <div class="col-sm-6 px-0 d-none d-sm-block">
+          <img src="https://images.pexels.com/photos/2878738/pexels-photo-2878738.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=3"
+            alt="signup image" class="w-100 vh-100" style="object-fit: cover; object-position: left;">
+    </div>
   </div>
+</div>
+</section>
+
+<script src="/javascript/script.js"></script>
+
+

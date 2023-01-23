@@ -31,8 +31,9 @@
     </div>
   </div> --}}
 
-<section class="vh-100%">
-  <div class="container-fluid">
+<section class="vh-100% vw-100">
+  <div class="container-flu
+  ">
     <div class="row">
       <div class="col-sm-6 text-black">        
 
@@ -40,16 +41,16 @@
 
           <form id="login" action="/login" onsubmit="return login()" method="post" style="width: 23rem">
 
-            <h3 class="fw-bold text-black mb-3 pb-3" style="letter-spacing: 1px;">Log in</h3>
+            <h3 class="fw-normal text-black mb-3 pb-3" style="letter-spacing: 1px;">ShopWine helps you to get drink at your doors.</h3>
 
             <div class="form-outline mb-4">
-              <input type="text" name="email" id="email" class="form-control mb-2" >
               <label class="form-label" for="form2Example18">Email address</label>
+              <input type="text" name="email" id="email" class="form-control mb-2" >              
             </div>
 
             <div class="form-outline mb-4">
-              <input type="password" name="password" id="password" class="form-control mb-2" >
               <label class="form-label" for="form2Example28">Password</label>
+              <input type="password" name="password" id="password" class="form-control mb-2">              
             </div>
               
             <div class="pt-1 mb-4">
@@ -62,7 +63,7 @@
             {{#if message}}  
             <b style="line-height:3rem" id="err" class="text-danger">{{message}}</b>
             {{else}}
-            <b id="error_L" class="text-danger"></b>
+            <b id="loginerror" class="text-danger"></b>
             {{/if}}
             </div>
             
@@ -80,3 +81,4 @@
   </div>
 </section>
 
+<script src="/javascript/script.js"></script>

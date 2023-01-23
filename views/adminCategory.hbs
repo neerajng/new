@@ -1,19 +1,21 @@
-<div class="container mx-auto d-flex justify-content-between">
-<h1 class="ms-0">Category Management</h1>
-<div class="mt-5">
+{{> adminSidebar category='category'}}
+<div class="vh-100">
+<div class="container me-0 d-flex justify-content-between">
+<h1 class="ms-0 pt-3">Category Management</h1>
+<div class="mt-5 me-5 mb-2">
 <a class="btn btn-success" href="/admin/addcategory">Add Category</a>
 </div>
 </div>
-<div class="container vh-100 mx-auto">
-<table class="table align-middle text-center mt-4" id="datatable">
-  <thead class="bg-success text-light">
+<div class="container me-0">
+<table class="table align-middle text-center" id="datatable">
+  <thead >
     <tr>
-      <th style="width: 16.66%">Category Name</th>
-      <th style="width: 16.66%">Icon</th>
-      <th style="width: 16.66%">Action</th>
+      <th style="width: 25%">Category Name</th>
+      <th style="width: 20%">Icon</th>
+      <th style="width: 23%">Action</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody class="table-success">
     {{#each categoryList}}
     <tr>      
       <td><p class="mx-0 mb-1">{{name}}</p></td>  
@@ -30,4 +32,6 @@
   </tbody>
 </table>
 </div>
+</div>
+{{> dataTable}}
 <script src="/javascript/deleteCategory.js"></script> 

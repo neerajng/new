@@ -78,7 +78,7 @@ module.exports = {
         lastname: req.body.lname,
         email: req.body.email,
         phone: req.body.phone,
-        password: req.body.password,
+        password: req.body.password1,
       }    
       next();  
       res.redirect('/otp');
@@ -126,7 +126,7 @@ module.exports = {
     console.log(phone.match(phoneformat)) 
     if(phone.match(phoneformat)){
       next()
-      return res.redirect('/forgot_otp') //res.render('forgot-otp')            
+      return res.redirect('/forgotOtp') //res.render('forgot-otp')            
     }else{
       req.session.message='Enter a valid phone number'
       return res.redirect('/forgot') // res.render('forgotPass',{message:'Enter a valid phone number'})
@@ -167,9 +167,9 @@ module.exports = {
   },
 
   loginUser:async (req,res)=>{
-  const registeredUser = await User.findOne({email: req.body.email})
-  const user=await User.findOne({email:req.body.email})
-  const blocked=(user.isBlocked==true)
+  try{  
+  const registeredUser = await User.findOne({email:req.body.email})
+  const blocked=(registeredUser.isBlocked==true)
   console.log(registeredUser||!blocked)
   if(registeredUser&&!blocked){
     try{              
@@ -188,9 +188,13 @@ module.exports = {
     }  
   }
   else{
-    req.session.message='You are not a registered User/blocked'
+    req.session.message='You have been blocked'
     return res.redirect('/login')//res.render('login',{message:'You are not a registered User'})
   }
+}catch(error){
+  req.session.message='No user Found'
+  return res.redirect('/login')
+}
 },
 logoutUser:(req,res)=>{
   req.session.auth=null

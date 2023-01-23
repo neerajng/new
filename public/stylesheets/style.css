@@ -29,3 +29,7 @@
     border-radius: 50px;
     color: rgb(22, 21, 21);
 }
+
+body{
+    overflow-x: hidden;
+}
