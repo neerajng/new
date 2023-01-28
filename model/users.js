@@ -46,6 +46,34 @@ const userSchema = new mongoose.Schema({
       }
     }
   ],
+  address: [
+    {
+        houseName: {
+          type : String ,
+          required: true
+        } ,
+        phone: {
+          type : Number ,
+          required: true
+        },
+        city: {
+          type : String ,
+          required: true
+        } ,
+        postalCode: {
+          type : String ,
+          required: true
+        },
+        state: {
+          type : String ,
+          required: true
+        },
+        country: {
+          type : String ,
+          required: true
+        }
+    }
+  ] 
 })
 
 userSchema.pre('save', async function (next) {
