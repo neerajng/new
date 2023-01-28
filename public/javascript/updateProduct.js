@@ -18,7 +18,8 @@ async function submitForm(e){
     formData.append("price", document.getElementById("price").value);
     formData.append("fileName", file);
     formData.append("description", document.getElementById("description").value);
-    formData.append("category", document.getElementById("inputCat").value);     
+    formData.append("category", document.getElementById("inputCat").value); 
+    formData.append("stock", document.getElementById("stock").value);     
     const url = 'http://localhost:3000/admin/products/edit/'+data  
 
     console.log(url);

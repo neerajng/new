@@ -25,7 +25,11 @@ const productSchema=new mongoose.Schema({
     isBlocked: { 
       type: Boolean, 
       default: false 
-    }
+    },
+    stock: {
+      type: Number,
+      required: [true, 'Stock cannot be empty']
+    },
   })  
   
   const Product = mongoose.model('Product', productSchema);

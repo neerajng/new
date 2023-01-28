@@ -1,4 +1,4 @@
-const mongoose= require('mongoose');
+const mongoose = require('mongoose');
 const bcrypt = require('bcrypt')
 
 const userSchema = new mongoose.Schema({
@@ -25,17 +25,38 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Password cannot be empty']
   },
-  isBlocked: { 
-    type: Boolean, 
-    default: false 
-  }  
+  isBlocked: {
+    type: Boolean,
+    default: false
+  },
+  cart: [
+    {
+      id: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "Product"
+      },
+      quantity: {
+        type: Number
+      },
+      increment: {
+        type: Boolean
+      },
+      decrement: {
+        type: Boolean
+      }
+    }
+  ],
 })
 
-userSchema.pre('save', async function(next){
+userSchema.pre('save', async function (next) {
   try {
-    hashedPassword = await bcrypt.hash(this.password, 10)
-    this.password = hashedPassword
-    next();
+    if (this.isModified('password')) {
+      hashedPassword = await bcrypt.hash(this.password, 10)
+      this.password = hashedPassword
+      next();
+    } else {
+      next();
+    }
   } catch (error) {
     console.log(error)
   }
@@ -45,4 +66,4 @@ userSchema.pre('save', async function(next){
 
 const User = mongoose.model('User', userSchema);
 
-module.exports={User};
+module.exports = { User };

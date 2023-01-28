@@ -1,38 +1,59 @@
+{{> userNavbar}}
+<header class="bg-warning py-1"
+    style="background-image: linear-gradient(165deg, rgb(21, 26, 35) 85%, rgb(255, 216, 151) 85%)">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Welcome the most valuable person on earth!!!</h1>
+            <p class="lead fw-normal text-light-50 mb-0">Let's celebrate each and every moments.</p>
+        </div>
+    </div>
+</header>
 
-        <header class="bg-warning py-5 " style="background-image: linear-gradient(165deg, rgb(21, 26, 35) 85%, rgb(255, 216, 151) 85%)">
-            <div class="container px-4 px-lg-5 my-5">
-                <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">Welcome the most valuable person on earth!!!</h1>
-                    <p class="lead fw-normal text-light-50 mb-0">Let's celebrate each and every moments.</p>
-                </div>
-            </div>
-        </header>
-        
-        <section class="py-5" style="background-image: linear-gradient(to top, #bdc2e8 0%, #bdc2e8 1%, #e6dee9 100%);">
-            <div class="container px-4 px-lg-5 mt-5">
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    {{#each product}}
-                    <div class="col mb-5">
-                        <div class="card h-100">
-                            <!-- Product image-->
-                            <img class="card-img-top" src="{{image}}" alt="Sample" />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">{{name}}</h5>
-                                    <!-- Product price-->
-                                    <p class=""><i class="fa fa-inr fw-2" aria-hidden="true"></i><b>{{price}}</b></p>                                    
+<section class="py-1" style="background-image: linear-gradient(to top, #bdc2e8 0%, #bdc2e8 1%, #e6dee9 100%);">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+            {{#each product}}
+            {{#if (eq isBlocked false)}}
+            <div class="col mb-5">
+                <div class="card h-100">
+                    <!-- Product image-->
+                    <a href="http://localhost:3000/singleProduct/{{_id}}"><img class="card-img-top" src="{{image}}"
+                            alt="Sample" /></a>
+                    <!-- Product details-->
+                    <div class="card-body p-auto">
+                        <div class="text-center">
+                            <!-- Product name-->
+                            <h5 class="fw-bolder">{{name}}</h5>
+                            <!-- Product price-->
+                            <p class=""><i class="fa fa-inr fw-2" aria-hidden="true"></i><b>{{price}}</b></p>
+                        </div>
+                    </div>
+                    <!-- Product actions-->
+                    <div class="card-footer py-4 pt-0 border-top-0 bg-transparent row">
+                        <div class="text-center col"><a class="btn btn-outline-primary mt-auto"
+                                href="http://localhost:3000/singleProduct/{{_id}}">View Details</a></div>
+                        <div class="text-center col"><a onclick='addToCart(event)' data-url={{_id}}
+                                class="btn btn-outline-danger mt-auto" id="liveToastBtn-{{_id}}">Add to cart</a></div>                                
+                        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                            <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                <div class="toast-header">
+                                    <img src="https://thumbs.dreamstime.com/b/shopping-cart-icon-flat-style-any-projects-use-website-mobile-app-presentation-204446201.jpg" width="30px" height="30px" class="rounded me-2" alt="...">
+                                    <strong class="me-auto text-success">Notification</strong>
+                                    <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                        aria-label="Close"></button>
                                 </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
+                                <div class="toast-body text-success">
+                                    Product has been added to cart.
+                                </div>
                             </div>
                         </div>
                     </div>
-                    {{/each}}
                 </div>
             </div>
-        </section>
- 
+            {{/if}}
+            {{/each}}
+        </div>
+    </div>
+</section>
+<script src="/javascript/addToCart.js"></script>

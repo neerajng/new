@@ -1,0 +1,99 @@
+{{> userNavbar}}
+<section class="vh-auto">
+  <div class="container py-5">
+    <div class="row d-flex justify-content-center my-4">
+      <div class="col-md-8">
+        <div class="card mb-4">
+          <div class="card-header py-3">
+            <h5 class="mb-0">Cart</h5>
+          </div>
+          {{#each cartItems}} 
+          <div class="card-body">
+            <!-- Single item -->
+            <div class="row ">
+              <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
+                <!-- Image -->
+                <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
+                  <img src="{{id.image}}" class="w-100 rounded" alt="Prod Image" />
+                  <a href="#!">
+                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
+                  </a>
+                </div>
+                <!-- Image -->
+              </div>
+
+              <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
+                <!-- Data -->
+                <p><strong>{{id.name}}</strong></p>
+                <p>Category: {{id.description}}</p>
+                 <p><b>Stock:</b> {{id.stock}}</p>                   
+                <a class="btn btn-danger btn-sm me-1 mb-2 fas fa-trash" data-mdb-toggle="tooltip"
+                  onclick="deleteCart(event)" data-url={{id._id}}
+                  title="Remove item">
+                </a>                
+              </div>
+
+              <div class="col-lg-4 col-md-6 mb-4 mb-lg-0 ">
+                <!-- Quantity -->
+                <p class="fw-bold text-center">Quantity</p>
+                <div class="d-flex justify-content-around">     
+                             
+                <a {{#if (lesse quantity 0)}} style="pointer-events: none" {{/if}} 
+                class="btn btn-primary fas fa-minus pt-2" 
+                {{#if (eq quantity 1)}}  onclick="deleteCart(event)" {{else}} onclick="decBtn(event)" {{/if}} 
+                data-url={{id._id}}>
+                </a>
+
+                <b class="fs-4">{{quantity}}</b>
+                <a {{#if (grte quantity id.stock)}} style="pointer-events: none" {{/if}} class="btn btn-primary fas fa-plus pt-2" onclick="incBtn(event)" data-url={{id._id}}></a>                
+                </div>                            
+              </div>
+              <p class="text-end pe-5 text-md-end ">
+                  Price : <strong>₹{{into id.price quantity}}</strong>
+                </p>
+            </div>            
+            <hr class="" />            
+          </div>          
+          {{/each}}
+          
+        </div>
+        
+      </div>
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <div class="card-header py-3">
+            <h5 class="mb-0">Summary</h5>
+          </div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                Products
+                <span>₹{{id.price}}</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                Shipping
+                <span>Gratis</span>
+              </li>
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                <div>
+                  <strong>Total amount</strong>
+                  <strong>
+                    <p class="mb-0">(including VAT)</p>
+                  </strong>
+                </div>
+                <span><strong>₹{{totalPrice}}</strong></span>
+              </li>
+            </ul>
+            <a href="/checkout"type="button" class="btn btn-primary btn-lg btn-block">
+              Go to checkout
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="/javascript/addToCart.js"></script> 

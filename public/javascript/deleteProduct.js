@@ -28,7 +28,7 @@ async function deleteprod(e){
     })
     .then(response => response.json())
     .then(response=>{
-        console.log("wokin60")
+        console.log("working")
         window.location.href=response.redirect
     })
     

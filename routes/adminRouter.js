@@ -10,9 +10,8 @@ router.get('/category',adminAuth.isLoggedIn,adminController.getAdminCategory)
 router.get('/addcategory',adminAuth.isLoggedIn,adminController.getAddCategory)
 router.get('/products',adminAuth.isLoggedIn,adminController.getAdminProduct)
 router.get('/addproduct',adminAuth.isLoggedIn,adminController.getAddProducts)
-
 router.get('/updateproduct/:_id',adminAuth.isLoggedIn,adminController.getUpdateProduct)
-
+router.get('/orders',adminAuth.isLoggedIn,adminController.getAdminOrders)
 router.get('/logout',adminAuth.isLoggedIn,adminController.LogoutAdmin)
 //------------------------------------------------------//get methods only
 
