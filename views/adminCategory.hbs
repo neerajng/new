@@ -1,38 +1,63 @@
 {{> adminNavbar}}
-{{> adminSidebar category='category'}}
+{{> adminSidebar Category='Category'}}
 <div class="vh-100">
-<div class="container me-0 d-flex justify-content-between">
-<h1 class="ms-0 pt-3">Category Management</h1>
-<div class="mt-5 me-5 mb-2">
-<a class="btn btn-success" href="/admin/addcategory">Add Category</a>
-</div>
-</div>
-<div class="container me-0">
-<table class="table align-middle text-center" id="datatable">
-  <thead >
-    <tr>
-      <th style="width: 25%">Category Name</th>
-      <th style="width: 20%">Icon</th>
-      <th style="width: 23%">Action</th>
-    </tr>
-  </thead>
-  <tbody class="table-success">
-    {{#each categoryList}}
-    <tr>      
-      <td><p class="mx-0 mb-1">{{name}}</p></td>  
-      <td><i class="me-4 fs-4 {{icon}}" style="color:{{color}}"aria-hidden="true"></i></p></td>
-      <td class="text-center">
-         <ul class="d-flex justify-content-center" style="list-style-type: none;">        
-        <li class="px-lg-0">
-          <button class="btn btn-danger delete-cat" id="delete" data-url={{_id}}>Delete</button>
-        </li>        
-        </ul>
-      </td>
-    </tr>    
-    {{/each}} 
-  </tbody>
-</table>
-</div>
+  <div class="container me-0 d-flex justify-content-between">
+    <h1 class="ms-0 pt-3">Category Management</h1>
+    <div class="mt-5 me-5 mb-2">
+      <a class="btn btn-success" href="/admin/addcategory">Add Category</a>
+    </div>
+  </div>
+  <div class="container me-0">
+    <table class="table align-middle text-center" id="datatable">
+      <thead>
+        <tr>
+          <th class="text-center" style="width: 25%">Category Name</th>
+          {{!-- <th style="width: 20%">Icon</th> --}}
+          <th class="text-center" style="width: 23%">Action</th>
+        </tr>
+      </thead>
+      <tbody class="table-success">
+        {{#each categoryList}}
+        <tr>
+          <td>
+            <p class="mx-0 mb-1">{{name}}</p>
+          </td>
+          <td class="text-center">
+            <ul class="d-flex justify-content-center" style="list-style-type: none;">
+              <li class="px-lg-0">
+                {{#if isBlocked}}
+                <!-- Button trigger modal -->
+                <a class="btn btn-success" data-bs-toggle="modal" id="delete" data-bs-target="#{{_id}}">Add</a>
+                {{else}}
+                <a class="btn btn-danger" data-bs-toggle="modal" id="delete" data-bs-target="#{{_id}}">Delete</a>
+                {{/if}}
+                <!-- Modal -->
+                <div class="modal fade" id="{{_id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                  aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered ">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        Are you sure you want to proceed?
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success px-3" onclick="deletecat(event)" data-url={{_id}}>OK</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
 </div>
 {{> dataTable}}
-<script src="/javascript/deleteCategory.js"></script> 
+<script src="/javascript/deleteCategory.js"></script>

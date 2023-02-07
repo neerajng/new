@@ -1,6 +1,7 @@
 const { Category } = require('../model/category')
 const { Product } = require('../model/product')
 const { User } = require('../model/users')
+const Order = require('../model/order')
 const adminEmail = "neerajng@gmail.com"
 const adminPass = "admin"
 module.exports = {
@@ -25,14 +26,27 @@ module.exports = {
   },
 
   getAdminCategory: async (req, res) => {
-    const categoryList = await Category.find();
-    if (!categoryList) {
-      res.status(500).json({ success: false })
+    try {
+      const categoryList = await Category.find();
+      res.render('adminCategory', { categoryList })
+    } catch (e) {
+      console.log(e)
+      res.render('adminCategory')
     }
-    res.render('adminCategory', { categoryList })
   },
+
   getAddCategory: (req, res) => {
-    res.render('adminAddCategory')
+    try {
+      if (req.session.message) {        
+        const message = req.session.message
+        req.session.message = null
+        res.render('adminAddCategory', { message })
+      } else {
+        res.render('adminAddCategory')
+      }
+    } catch (e) {
+      console.log(e);
+    }
   },
 
   getAdminProduct: async (req, res) => {
@@ -67,6 +81,45 @@ module.exports = {
   getAdminOrders: (req, res) => {
     res.render('adminOrders')
   },
+
+  //for chart
+  getchartData: async (req, res, next) => {
+    console.log('getchartData controller works');
+    try {
+
+      const productWiseSale = await Order.aggregate(
+        [
+          {
+            '$lookup': {
+              'from': 'products',
+              'localField': 'orderItems.id',
+              'foreignField': '_id',
+              'as': 'test'
+            }
+          }, {
+            '$unwind': {
+              'path': '$test'
+            }
+          }, {
+            '$group': {
+              '_id': '$test.name',
+              'totalAmount': {
+                '$sum': '$totalAmount'
+              }
+            }
+          }
+        ]
+      )
+
+      console.log(productWiseSale);
+      return res.json({ productWiseSale: productWiseSale })
+    } catch (err) {
+      console.log(err)
+    }
+  },
+  showChart: (req, res) => {
+    res.render('adminChart')
+  },
   //--------------------------------------------------------//
   LoginAdmin: (req, res) => {
     req.session.admin = true; ``
@@ -86,7 +139,7 @@ module.exports = {
           }
         })
         return res.json({
-          redirect: "http://localhost:3000/admin/users"
+          redirect: "/admin/users"
         })
       } catch (error) {
         console.log(error)
@@ -99,7 +152,7 @@ module.exports = {
           }
         })
         return res.json({
-          redirect: "http://localhost:3000/admin/users"
+          redirect: "/admin/users"
         })
       } catch (error) {
       }
@@ -118,11 +171,16 @@ module.exports = {
         color: req.body.color
       })
       category = await category.save();
-      if (!category)
-        return res.status(404).send('the category cannot be created!')
-
       res.redirect('/admin/category')
     } catch (e) {
+      console.log(e)
+      const index = e.message.indexOf('name:') + 6;
+      const message = e.message.substring(index)
+      if (e.code === 11000) {
+      req.session.message = 'Category Name already exists'
+      }else{
+      req.session.message = message
+      }
       res.redirect('/admin/addcategory')
     }
   },
@@ -130,25 +188,51 @@ module.exports = {
   deleteCategory: async (req, res) => {
     console.log("1")
     const id = req.params._id
-    const user = await Category.findById(id)
+    const category = await Category.findById(id)
     console.log(id)
-    console.log(user)
+    console.log(category)
+    // try {
+    //   await Category.findByIdAndRemove(id)
+    //     .then((category) => {
+    //       if (category) {
+    //         return res.status(200).json({ redirect: "/admin/category" })
+    //       } else {
+    //         return res.status(404).json({ redirect: "/admin/category" })
+    //       }
+    //     }).catch(err => {
+    //       return res.status(400).json({ redirect: "/admin/category" })
+    //     })
 
-    try {
-      await Category.findByIdAndRemove(id)
-        .then((category) => {
-          if (category) {
-            return res.status(200).json({ redirect: "http://localhost:3000/admin/category" })
-          } else {
-            return res.status(404).json({ redirect: "http://localhost:3000/admin/category" })
+    // } catch (error) {
+    //   console.log(error)
+    // }
+    if (category.isBlocked) {
+      try {
+        await Category.findOneAndUpdate({ _id: id }, {
+          $set: {
+            isBlocked: false
           }
-        }).catch(err => {
-          return res.status(400).json({ redirect: "http://localhost:3000/admin/category" })
         })
-
-    } catch (error) {
-      console.log(error)
+        return res.json({
+          redirect: "/admin/category"
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    } else {
+      try {
+        await Category.findOneAndUpdate({ _id: id }, {
+          $set: {
+            isBlocked: true
+          }
+        })
+        return res.json({
+          redirect: "/admin/category"
+        })
+      } catch (error) {
+      }
     }
+    
 
   },
   //--------------------------------------------------------------//
@@ -197,10 +281,10 @@ module.exports = {
         { new: true }
       )
       console.log(product)
-      return res.status(200).json({ redirect: "http://localhost:3000/admin/products/" })
+      return res.status(200).json({ redirect: "/admin/products/" })
     } catch (e) {
       console.log(e)
-      return res.status(200).json({ redirect: "http://localhost:3000/admin/updateproduct/" })
+      return res.status(200).json({ redirect: "/admin/updateproduct/" })
     }
   },
 
@@ -211,24 +295,6 @@ module.exports = {
     console.log(id)
     console.log(product)
 
-    //   try{
-    //   await Product.findByIdAndRemove(id)     
-    //   .then((product)=>{        
-    //     if(product){          
-    //       return res.status(200).json({redirect:"http://localhost:3000/admin/products"})
-    //     }else{
-    //       return res.status(404).json({redirect:"http://localhost:3000/admin/products"})
-    //     }
-    //   }).catch(err=>{
-    //     return res.status(400).json({redirect:"http://localhost:3000/admin/products"})
-    //   })
-
-    // } catch (error) {
-    //   console.log(error)
-    // }    
-
-    // }
-
     if (product.isBlocked) {
       try {
         await Product.findOneAndUpdate({ _id: id }, {
@@ -237,9 +303,8 @@ module.exports = {
           }
         })
         return res.json({
-          redirect: "http://localhost:3000/admin/products"
+          redirect: "/admin/products"
         })
-        // return res.redirect('/admin/products')
       } catch (error) {
         console.log(error)
       }
@@ -251,9 +316,8 @@ module.exports = {
           }
         })
         return res.json({
-          redirect: "http://localhost:3000/admin/products"
+          redirect: "/admin/products"
         })
-        // return res.redirect('/admin/products')
       } catch (error) {
       }
     }

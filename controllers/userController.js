@@ -1,11 +1,11 @@
 const session = require('express-session')
 const { User } = require('../model/users')
 const { Product } = require('../model/product')
+const Order = require('../model/order')
 // const bcrypt = require('bcrypt')
-const fast2sms = require('fast-two-sms')
+const Razorpay = require('razorpay');
 const bcrypt = require('bcrypt')
 const axios = require('axios')
-const { create } = require('hbs')
 require('dotenv').config()
 
 
@@ -15,6 +15,7 @@ module.exports = {
     console.log(req.session.user)
     return res.render('home-page', { product })
   },
+
   getRegister: (req, res) => {
     if (req.session.message) {
       const message = req.session.message
@@ -29,6 +30,7 @@ module.exports = {
   getRegisterOtp: (req, res) => {
     return res.render('register-otp')
   },
+
   getLogin: (req, res) => {
     if (req.session.message) {
       const message = req.session.message
@@ -39,6 +41,7 @@ module.exports = {
       return res.render('login', { message })
     }
   },
+
   getForgotpass: (req, res) => {
     if (req.session.message) {
       const message = req.session.message
@@ -49,12 +52,15 @@ module.exports = {
       return res.render('forgotPass', { message })
     }
   },
+
   getForgotPassOtp: (req, res) => {
     return res.render('forgot-otp')
   },
+
   getChangePass: (req, res) => {
     return res.render('changePass')
   },
+
   getLanding: (req, res) => {
     const landing = [
       { img: "/images/7.jpg", price: "Rs.100", name: "Spiritual  Moment", text: "This premium vodka is smooth and perfectly blends with your senses, giving an enriched taste. " },
@@ -68,14 +74,16 @@ module.exports = {
     ];
     return res.render('landing-page', { landing })
   },
+
   getSingleProduct: async (req, res) => {
     try {
       console.log("getSingleProduct")
-      const id = req.params._id
-      const userid = req.session.user._id
+      const id = await req.params._id
+      const userid = await req.session.user._id
       console.log(userid)
       const product = await Product.findById(id).populate('category');
       const user = await User.findById(userid)
+      console.log(product);
       if (!product) {
         res.status(500).json({ success: false })
       }
@@ -84,6 +92,7 @@ module.exports = {
       return res.render('userSingleProduct', { message: 'Error Message' })
     }
   },
+
   getCart: async (req, res) => {
     try {
       console.log("\ngetCart or emptycart")
@@ -107,9 +116,12 @@ module.exports = {
         const totalPrice = cartItems.reduce((total, item) => {
           return total + (item.quantity * item.id.price)
         }, 0);
-        console.log(totalPrice);
-        console.log(cartItems);
-        res.render('cart', { cartItems, totalPrice })
+
+        const totalCount = cartItems.reduce((total, item) => {
+          return total + (item.quantity)
+        }, 0);
+
+        res.render('cart', { cartItems, totalPrice, totalCount })
       }
     } catch (e) {
       console.log(e)
@@ -135,25 +147,23 @@ module.exports = {
         console.log('product saved!!');
         user[0].cart.push(item);
         await user[0].save();
-        return res.json({redirect: "/getcart"})
+        return res.json({ redirect: "/getcart" })
       } else {
         console.log('else working!');
-        const res = user[0].cart.findIndex((item) => {
+        const resl = user[0].cart.findIndex((item) => {
           return item.id.valueOf() === `${id}`
         })
-        console.log(res)
-        if (res === -1) {
+        console.log(resl)
+        if (resl === -1) {
           user[0].cart.push(item);
         } else {
           console.log('inner else working!');
-          user[0].cart[res].quantity = user[0].cart[res].quantity + 1;
-          console.log(user[0].cart[res].quantity);
+          user[0].cart[resl].quantity = user[0].cart[resl].quantity + 1;
+          console.log(user[0].cart[resl].quantity);
         }
         await user[0].save();
       }
-      return res.json({
-
-      })
+      return res.status(200).json({ redirect: "/home" })
     } catch (err) {
       console.log(err)
     }
@@ -193,7 +203,7 @@ module.exports = {
 
   deleteCart: async (req, res) => {
     console.log('delete works started!!');
-    const id  = await req.params._id;
+    const id = await req.params._id;
     console.log(id);
     try {
       const user = await User.find({ email: req.session.email });
@@ -209,9 +219,154 @@ module.exports = {
     }
   },
 
-  checkout: (req, res) => {
-    res.render('checkout')
+  getOrder: async (req, res) => {
+    console.log("\ngetOrder\n")
+    const user = await User.find({ email: req.session.email }).populate('cart.id');
+
+    const cartItems = user[0].cart
+
+    const totalQuantity = cartItems.reduce((total, item) => {
+      return total + item.quantity;
+    }, 0);
+
+    const totalPrice = cartItems.reduce((total, item) => {
+      return total + (item.quantity * item.id.price)
+    }, 0);
+
+    res.render('order', { user: user[0], cartItems: cartItems, totalQuantity: totalQuantity, totalPrice: totalPrice })
+
   },
+
+  newShippingAddress: async (req, res) => {
+    console.log('\nshipping address working!!\n');
+    const id = req.params._id;
+    try {
+      const user = await User.find({ _id: id });
+      user[0].address.push(req.body);
+      await user[0].save();
+      res.redirect('/checkout');
+    } catch (e) {
+      console.log(e);
+    }
+  },
+
+  createOrder: async (req, res) => {
+    const { totalAmount, orderStatus, paymentMethod, shippingInfo } = req.body;
+    console.log(totalAmount);
+    console.log(orderStatus);
+    console.log(paymentMethod);
+    console.log(shippingInfo);
+    try {
+      console.log('try');
+      const user = await User.find({ email: req.session.email });
+      // console.log(user[0]._id);
+      const index = user[0].address.findIndex((item) => {
+        return item._id.valueOf() == shippingInfo;
+      })
+      // console.log(index);
+      let shippingAddres = user[0].address[index];
+      // console.log(shippingAddres);
+      // console.log(req.session.userid)
+      //order schemadetails setup
+      if (paymentMethod == 'cash on delivery') {
+        console.log('if  cod controller wroks!!');
+        const newOrder = await Order.create({
+          shippingInfo: shippingAddres,
+          user: user[0]._id,
+          orderItems: user[0].cart,
+          totalAmount: totalAmount,
+          orderStatus: orderStatus,
+          paymentMode: paymentMethod,
+        })
+        // console.log('1');
+        // console.log(user[0].cart);
+        // console.log('order item below');
+        // console.log(newOrder.orderItems);
+        user[0].cart.splice(0);
+        // console.log(user[0].cart);
+        await user[0].save({ validateBeforeSave: false });
+        //saving the order
+        await newOrder.save();
+        console.log('order saved in db!!!');
+        res.json({ redirect: '/order/success' });
+      }
+      else if (paymentMethod === 'Razor pay') {
+        console.log('if razor pay controller works!!')
+        let instance = new Razorpay({
+          key_id: process.env.RAZ_KEY_ID,
+          key_secret: process.env.RAZ_KEY_SECRET
+        });
+        // console.log(instance);
+        const myOrder = await instance.orders.create({
+          amount: totalAmount * 100,
+          currency: "INR",
+          // order_id: order.id,
+          receipt: process.env.RAZ_RECEIPT
+        })
+        console.log(myOrder);
+
+        const newOrder = await Order.create({
+          shippingInfo: shippingAddres,
+          user: user[0]._id,
+          orderItems: user[0].cart,
+          totalAmount: totalAmount,
+          orderStatus: orderStatus,
+          paymentMode: paymentMethod,
+        })
+        // console.log(newOrder);
+        user[0].cart.splice(0);
+        // console.log(user[0].cart);
+        await user[0].save({ validateBeforeSave: false });
+        //saving the order
+        await newOrder.save();
+        console.log('order saved in db!!!');
+        res.json({ myOrder: myOrder, redirect: '/order/success' })
+        console.log('end');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+
+  },
+
+  orderSuccess: async (req, res) => {
+    res.render('payment-success')
+  },
+
+  getUserOrder: async (req, res) => {
+    console.log('getUser order works!');
+    const user = await User.find({ email: req.session.email });
+    const userId = user[0]._id
+    console.log(userId);
+    const orders = await Order.find({ user: userId }).populate('orderItems.id').sort({createdAt: -1});
+    // console.log(orders)
+    // const user = await User.find({ Email: req.session.email })
+    // console.log(user)
+    res.render('user-profile', { order: orders, id: req.session._id, user: user })
+    // if (orders.length == 0) {
+    //   res.render('user-order-empty')
+    // } else {
+      
+    // }
+  },
+
+  cancelOrder: async (req, res) => {
+    console.log('Cancel order works!')
+    const id = req.params._id
+    const user = await User.find({ email: req.session.email })
+    // console.log(user);
+    console.log(id);
+    try {
+      const order = await Order.find({ id: id })
+      console.log(order);
+      const cancelOrder = await Order.findOneAndUpdate({ _id: id }, { isCancelled: true }, { user: user });
+      res.json({ redirect: '/order/user-order' });
+    } catch (err) {
+      console.log(err);
+    }
+  },
+
+
   //----------------------------------------------------------------//
 
 
@@ -264,6 +419,7 @@ module.exports = {
       })
     }
   },
+
   fetchOtp: (req, res, next) => {
     console.log("forgot otp-page(enter phone number")
     const phoneformat = /^\d{10}$/;
@@ -277,6 +433,7 @@ module.exports = {
       return res.redirect('/forgot') // res.render('forgotPass',{message:'Enter a valid phone number'})
     }
   },
+
   changepass: (req, res) => {
     console.log('check otp for new password')
     console.log(req.session);
@@ -294,6 +451,7 @@ module.exports = {
       })
     }
   },
+  
   changed: async (req, res) => {
     const existphone = await User.findOne({ phone: req.session.phone })
     console.log(existphone)
@@ -313,6 +471,7 @@ module.exports = {
 
   loginUser: async (req, res) => {
     try {
+      console.log("Logged in");
       const registeredUser = await User.findOne({ email: req.body.email })
       const blocked = (registeredUser.isBlocked == true)
       console.log(registeredUser || !blocked)
@@ -324,7 +483,8 @@ module.exports = {
           if (pass_match) {
             req.session.auth = true
             req.session.email = req.body.email
-            console.log(req.session.email)
+            req.session.user = registeredUser
+            console.log("hi\n" + req.session.user)
             return res.redirect('/home') //res.render('home-page')
           } else {
             req.session.message = 'Wrong Password'
@@ -346,6 +506,7 @@ module.exports = {
   logoutUser: (req, res) => {
     req.session.auth = null
     req.session.email = null
+    req.session.user = null
     res.redirect('/logout')
   }
 }

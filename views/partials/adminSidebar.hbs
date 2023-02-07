@@ -4,9 +4,9 @@
   margin: 0;
   padding: 0;
   width: 200px;
-  background-color: rgb(255, 245, 240);
+  background-color: #ffebc7;
   position: absolute;
-  height: 100%;
+  height: 90%;
   overflow: auto;
   z-index: 1001;  
 }
@@ -15,20 +15,21 @@
 .sidebar a {
   display: block;
   color: black;
+  font-weight:bold;
   padding: 16px;
   text-decoration: none;
 }
 
 /* Active/current link */
 .sidebar a.active {
-  background-color: #9cd711;
+  background-color: #003547;
   color: white;
 }
 
 /* Links on mouse-over */
 .sidebar a:hover:not(.active) {
-  background-color: #555;
-  color: white;
+  background-color: #e0d9d7;
+  color: rgb(0, 0, 0);
 }
 
 /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
@@ -62,11 +63,13 @@ div.content {
 
 <!-- The sidebar -->
 <div class="sidebar">
-  <a class="btn {{#if home}}active{{/if}}" href="/admin/home">Home</a>
+  <a class="btn {{#if home}}active{{/if}}" href="/admin/home">Dashboard</a>
   <a class="btn {{#if users}}active{{/if}}" href="/admin/users">Users</a>
-  <a class="btn {{#if category}}active{{/if}}" href="/admin/category">Category</a>
+  <a class="btn {{#if Category}}active{{/if}}" href="/admin/category">Category</a>
   <a class="btn {{#if products}}active{{/if}}" href="/admin/products">Products</a>
   <a class="btn {{#if orders}}active{{/if}}" href="/admin/orders">Orders</a>
+  <a class="btn {{#if chart}}active{{/if}}" href="/admin/chart">Chart</a>  
 </div>
+
 
 

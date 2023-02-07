@@ -1,27 +1,15 @@
-
-let datatable= document.getElementById("datatable")
-if(datatable){
-    console.log("working1")
- datatable.addEventListener('click', (e)=>{
-    console.log(e.target.classList.contains('delete-cat'))
-    if(e.target.classList.contains('delete-cat')){
-        deletecat(e)
-        console.log("working3")
-    }
- })   
-}
-
+const basepath = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`
 async function deletecat(e){
+    e.preventDefault()
     console.log(e)
-    console.log("working2")
-    const data=e.target.dataset.url
-    console.log(data)
-    const url = 'http://localhost:3000/admin/category/delete/'+data
-    console.log(url)
-    const id=`${data}`
+    console.log("working")
+    const id=e.target.dataset.url
+    const url = `${basepath}/admin/category/delete/${id}`
+    console.log(url)   
 
     fetch(url,{
-        method:'DELETE',
+        method:'PUT',
+        credentials: 'same-origin',
         headers: {
             'Content-Type': 'application/json'
         },

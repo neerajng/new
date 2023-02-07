@@ -28,7 +28,16 @@ router.post('/add-to-cart/:_id',userAuth.isLoggedIn,userController.addToCart)
 router.put('/inc/:_id' , userAuth.isLoggedIn, userController.increment);
 router.put('/dec/:_id' , userAuth.isLoggedIn, userController.decrement);
 router.delete('/delete/:_id' , userAuth.isLoggedIn , userController.deleteCart);
-router.get('/checkout', userAuth.isLoggedIn, userController.checkout)
+
+//=============================Order Feature===========================================//
+router.get('/checkout', userAuth.isLoggedIn, userController.getOrder)
+router.post('/order/address/:_id' , userController.newShippingAddress)
+router.post('/order/create',userController.createOrder )  
+router.get('/order/success',userAuth.isLoggedIn,userController.orderSuccess)
+router.get('/order/user-order',userAuth.isLoggedIn,userController.getUserOrder)
+router.put('/order/cancel/:_id' ,userController.cancelOrder);
+
+
 
 
 module.exports = router;

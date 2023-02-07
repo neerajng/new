@@ -1,0 +1,139 @@
+
+{{> userNavbar}}
+
+<section style="background-color: #eee;">
+    <h1 class="text-center fluid bg-success text-light py-1">Profile</h1>
+
+    <div class="container py-5">
+
+        <div class="row">
+
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    {{#each user}}
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Full Name</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{firstname}} {{lastname}}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Email</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{email}}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Phone</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{phone}}</p>
+                            </div>
+                        </div>
+
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card bg-success mb-4 py-2">
+                     <div class="btn btn-success  ">
+                            <a href="#" class="text-decoration-none text-white">My Orders</a>
+                        </div>
+                        <div class="btn btn-success  ">
+                            <a href="#" class="text-decoration-none text-white">Change Profile </a>
+                        </div>
+                        <div class="btn btn-success">
+                            <a href="#" class="text-decoration-none text-white">Change Password</a>
+                        </div>
+                        <div class="btn btn-success ">
+                            <a href="/logout" class="text-decoration-none text-white">LogOut</a>
+                        </div>
+                    
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<h1 class="text-center fluid bg-warning text-light py-1">My Orders</h1>
+<div class="container mt-5 vh-100% pb-5">
+    <table class="table  main text-center table-striped userorder-container">
+        <thead>
+            <tr class="head">            
+                <th scope="col">HOME</th>
+                <th scope="col">PHONE</th>
+                <th scope="col">PINCODE</th>
+                <th scope="col">ADDRESS</th>
+                <th scope="col">STATUS</th>
+                <th scope="col">PAYMENT</th>
+                <th scope="col">TOTAL</th>
+                <th scope="col">ACTION</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            <tr class="rounded bg-white">
+               {{#each order}}
+                               
+                <td>{{shippingInfo.houseName}}</td>
+                <td >{{shippingInfo.phone}}</td>               
+                <td>{{shippingInfo.postalCode}}</td>
+                <td>{{shippingInfo.city}},{{shippingInfo.state}} , {{shippingInfo.country}}</td>
+                <td>
+                   {{#if isDelivered}}
+                    Delivered
+                    {{else}}
+                    {{#if isCancelled}}
+                    Cancelled
+                    {{else}}
+                    Processing
+                    {{/if}}
+                    {{/if}} 
+                </td>
+                <td>
+                    {{paymentMode}}
+                </td>
+                <td>
+                    Rs.{{totalAmount}}/-
+                </td>
+
+                {{!-- cancel order --}}
+                <td >
+                    {{#if isDelivered}}
+                <div class="order-cancel">
+                    <a class="success">Success</a>
+                </div>
+                {{else}}
+                <div class="order-cancel">
+                    {{#if isDelivered}}
+                    <a class="success">Processed</a>
+                    {{else}}
+                    {{#if isCancelled}}
+                    <a class=" " style="height:5rem; width:2rem; color:red; border-radius:10px">Cancelled</a>
+                    {{else}}
+                    <a data-url="{{_id}}" class="btn order-cancel-btn btn-danger">
+                        Cancel Order
+                    </a>
+                    {{/if}}
+                    {{/if}}
+                </div>
+                {{/if}}
+                </td>
+                {{!-- cancel order --}}
+            </tr> 
+            {{/each}}      
+        </tbody>
+        
+    </table>
+    <hr>
+</div>
+<script src="/javascript/order.js"></script>

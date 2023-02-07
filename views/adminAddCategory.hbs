@@ -1,5 +1,7 @@
 {{> adminNavbar}}
-<div class="container me-0 vh-100 my-2">
+{{> adminSidebar Category='Category'}}
+<div class="vh-100 pt-2 pb-5">
+<div class="container me-0 mt-0 pt-2 ">
 <h1>Add Category</h1>    
 <form method="post" action="/admin/category/add">
   
@@ -19,5 +21,11 @@
 
  
   <button type="submit" class="btn btn-primary mt-4 px-5 btn-success">Add</button>
+  {{#if message}}
+  <div class="mt-4">
+    <h6 class="text-danger">{{message}}</h6>
+  </div>
+  {{/if}}
 </form>
+</div>
 </div>

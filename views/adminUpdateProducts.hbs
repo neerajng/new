@@ -1,5 +1,8 @@
+<script defer src="https://cdn.crop.guide/loader/l.js?c=NWMWXY"></script>
 {{> adminNavbar}}
-<div class="conatiner mx-5 vh-auto ps-5 mt-2 mb-5 ">
+{{> adminSidebar products='products'}}
+<div class="vh-100% pt-2 pb-5">
+<div class="container me-0 mt-0 pt-2 ">
 <h1>Update Product Details</h1>
 
 <form id="updateForm" >
@@ -30,9 +33,11 @@
       <select id="inputCat" class="form-control" name="category">
         <option value="value">Choose...</option>
         {{#each categories}} 
+        {{#if (eq isBlocked false)}}
         {{!-- <option value="{{this._id}}" {{#if this._id}}selected{{/if}}>{{#if (eq this.name ../product.category.name)}}hi{{else}}hoy{{/if}}</option>  --}}
         {{!-- <option value="{{this._id}}" >{{this._id}}--{{../product.category._id}}</option> --}}
         <option value="{{this._id}}" {{#if (eq ../product.category.id this.id)}}selected{{/if}}>{{this.name}}</option>
+        {{/if}}
         {{/each}}        
       </select>
     </div> 
@@ -51,3 +56,4 @@
   }
 </script>
 <script src="/javascript/updateProduct.js"></script> 
+</div>

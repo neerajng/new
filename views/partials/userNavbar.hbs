@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light border border-warning fixed-top" style="background-color:#ffffff;">
   <div class="container-fluid">
 
-<a href="http://localhost:3000/home" class="text-decoration-none"><h2 style="color:#07464e;font-weight:bolder;">ShopWine<i class="fa fa-umbrella" aria-hidden="true"></i></h2></a>
+<a href="/home" class="text-decoration-none"><h2 style="color:#07464e;font-weight:bolder;">ShopWine<i class="fa fa-umbrella" aria-hidden="true"></i></h2></a>
     <!-- Toggle button -->
     <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <i class="fas fa-bars"></i>
@@ -13,7 +13,7 @@
         
         <!-- Link -->
         <li class="nav-item mr-auto">
-          <a class="nav-link text-black" href="#">Home</a>
+          <a class="nav-link text-black" href="/home">Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link text-black" href="#">Shop</a>
@@ -28,16 +28,17 @@
       <ul class="navbar-nav d-flex flex-row me-5">       
 
         <li class="nav-item me-3 me-lg-0">
-          <a href="http://localhost:3000/getcart" class="nav-link text-black">
+          <a href="/getcart" class="nav-link text-black">
           <i class="fas fa-shopping-cart"></i>
           <span class="badge text-bg-danger"></span>
           </a>
         </li>
+        
         <li class="nav-item me-3 me-lg-0">
-          <a class="nav-link text-black" href="#"><i class="fa fa-user"></i></a>
+          <a class="nav-link text-black" href="/order/user-order"><i class="fa fa-user"></i></a>
         </li>
         <li class="nav-item me-3 me-lg-0">
-          <a class="nav-link text-black" href="http://localhost:3000/logout"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
+          <a class="nav-link text-black" href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
         </li>
 
       </ul>
