@@ -1,0 +1,30 @@
+{{> adminNavbar}}
+{{> adminSidebar coupon='coupon'}}
+<div class="vh-100 pt-2  ">
+<div class="container me-0 mt-0 pt-2 pb-5">
+<h1>Add Coupon</h1>    
+<form action="/admin/add-coupon" method="post">
+  
+<div class="form-group col-md-6 mt-3">
+    <label for="couponCode">Coupon Code</label>
+    <input type="text" class="form-control" name="couponCode" placeholder="Enter Coupon Code" required>
+</div>
+<div class="form-group col-md-6 mt-3">
+    <label for="expiryDate">Expiry Date</label>
+    <input type="date" class="form-control" name="expiryDate" placeholder="Enter Expiry Date" required>
+</div> 
+
+<div class="form-group col-md-6 mt-3">
+    <label for="discountPercentage">Discount Rate</label>
+    <input type="number" class="form-control" name="discountPercentage" placeholder="Enter Discount Rate" required>
+</div>
+
+<div class="form-group col-md-6 mt-3">
+    <label for="minDiscountAmount">Minimum Parchase Amount</label>
+    <input type="number" class="form-control" name="minDiscountAmount" placeholder="Enter Minimum Parchase Amount" required>
+</div>  
+
+<button type="submit" class="btn btn-primary mt-4 px-5 btn-success">Create</button>
+</form>
+</div>
+</div>

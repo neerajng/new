@@ -2,6 +2,7 @@ const session = require('express-session')
 const { User } = require('../model/users')
 const { Product } = require('../model/product')
 const Order = require('../model/order')
+const Coupon = require('../model/coupon')
 // const bcrypt = require('bcrypt')
 const Razorpay = require('razorpay');
 const bcrypt = require('bcrypt')
@@ -96,10 +97,7 @@ module.exports = {
   getCart: async (req, res) => {
     try {
       console.log("\ngetCart or emptycart")
-      // console.log(req.session.email);
       const user = await User.find({ email: req.session.email }).populate('cart.id')
-      // console.log(user[0]);
-      // console.log(user[0].cart);
       if (user[0].cart.length === 0) {
         res.render('emptyCart');
       }
@@ -132,8 +130,6 @@ module.exports = {
   addToCart: async (req, res) => {
     try {
       const id = req.params._id
-      // console.log(id);
-      // console.log(req.session.email);
       const user = await User.find({ email: req.session.email });
       console.log('user here');
       console.log(user);
@@ -212,7 +208,6 @@ module.exports = {
       console.log(index);
       user[0].cart.splice(index, 1);
       await user[0].save();
-      // res.json({ redirect: '/cart' });
       return res.status(200).json({ redirect: "/getcart" })
     } catch (err) {
       console.log(err);
@@ -232,9 +227,15 @@ module.exports = {
     const totalPrice = cartItems.reduce((total, item) => {
       return total + (item.quantity * item.id.price)
     }, 0);
-
-    res.render('order', { user: user[0], cartItems: cartItems, totalQuantity: totalQuantity, totalPrice: totalPrice })
-
+    if (req.session.message != null && req.session.message1 != null) {
+      const couponMessage = req.session.message
+      const couponApplied = req.session.message1
+      req.session.message = null
+      req.session.message1 = null
+      res.render('order', { user: user[0], totalPrice: couponApplied[1], totalQuantity: couponApplied[2], couponMessage: couponMessage, couponApplied: couponApplied[0] })
+    } else {
+      res.render('order', { user: user[0], cartItems: cartItems, totalQuantity: totalQuantity, totalPrice: totalPrice })
+    }
   },
 
   newShippingAddress: async (req, res) => {
@@ -259,15 +260,10 @@ module.exports = {
     try {
       console.log('try');
       const user = await User.find({ email: req.session.email });
-      // console.log(user[0]._id);
       const index = user[0].address.findIndex((item) => {
         return item._id.valueOf() == shippingInfo;
       })
-      // console.log(index);
       let shippingAddres = user[0].address[index];
-      // console.log(shippingAddres);
-      // console.log(req.session.userid)
-      //order schemadetails setup
       if (paymentMethod == 'cash on delivery') {
         console.log('if  cod controller wroks!!');
         const newOrder = await Order.create({
@@ -278,14 +274,8 @@ module.exports = {
           orderStatus: orderStatus,
           paymentMode: paymentMethod,
         })
-        // console.log('1');
-        // console.log(user[0].cart);
-        // console.log('order item below');
-        // console.log(newOrder.orderItems);
         user[0].cart.splice(0);
-        // console.log(user[0].cart);
         await user[0].save({ validateBeforeSave: false });
-        //saving the order
         await newOrder.save();
         console.log('order saved in db!!!');
         res.json({ redirect: '/order/success' });
@@ -296,11 +286,9 @@ module.exports = {
           key_id: process.env.RAZ_KEY_ID,
           key_secret: process.env.RAZ_KEY_SECRET
         });
-        // console.log(instance);
         const myOrder = await instance.orders.create({
           amount: totalAmount * 100,
           currency: "INR",
-          // order_id: order.id,
           receipt: process.env.RAZ_RECEIPT
         })
         console.log(myOrder);
@@ -313,11 +301,8 @@ module.exports = {
           orderStatus: orderStatus,
           paymentMode: paymentMethod,
         })
-        // console.log(newOrder);
         user[0].cart.splice(0);
-        // console.log(user[0].cart);
         await user[0].save({ validateBeforeSave: false });
-        //saving the order
         await newOrder.save();
         console.log('order saved in db!!!');
         res.json({ myOrder: myOrder, redirect: '/order/success' })
@@ -338,23 +323,14 @@ module.exports = {
     const user = await User.find({ email: req.session.email });
     const userId = user[0]._id
     console.log(userId);
-    const orders = await Order.find({ user: userId }).populate('orderItems.id').sort({createdAt: -1});
-    // console.log(orders)
-    // const user = await User.find({ Email: req.session.email })
-    // console.log(user)
+    const orders = await Order.find({ user: userId }).populate('orderItems.id').sort({ createdAt: -1 });
     res.render('user-profile', { order: orders, id: req.session._id, user: user })
-    // if (orders.length == 0) {
-    //   res.render('user-order-empty')
-    // } else {
-      
-    // }
   },
 
   cancelOrder: async (req, res) => {
     console.log('Cancel order works!')
     const id = req.params._id
     const user = await User.find({ email: req.session.email })
-    // console.log(user);
     console.log(id);
     try {
       const order = await Order.find({ id: id })
@@ -365,7 +341,60 @@ module.exports = {
       console.log(err);
     }
   },
+  //-------------------------------Coupon-------------------------------------//
+  getCouponpage: async (req, res) => {
+    const couponMessage = req.session.message
+    req.session.message = null
+    res.render('user-coupon', { couponMessage })
+  },
 
+  applyCoupon: async (req, res) => {
+
+    try {
+      const user = await User.find({ email: req.session.email }).populate('cart.id');
+      const coupon = await Coupon.find({ couponCode: req.body.coupon });
+      console.log(coupon);
+      const cartItems = user[0].cart
+      const totalQuantity = cartItems.reduce((total, item) => {
+        return total + item.quantity;
+      }, 0);
+      let totalPrice = cartItems.reduce((total, item) => {
+        return total + (item.quantity * item.id.price)
+      }, 0);
+      if (coupon.length === 0) {
+        console.log('if worked');
+        req.session.message = 'Please enter a valid coupon'
+        res.redirect('/user-coupon')
+      } else if (totalPrice <= coupon[0].minDiscountAmount) {
+        req.session.message = 'Coupon is not applicable for this price !!'
+        res.redirect('/user-coupon')
+      }
+      else {
+        let isCouponUsed = coupon[0].users.some((item) => {
+          return item.id.valueOf() === `${req.session._userId}`
+        });
+        if (isCouponUsed) {
+          req.session.message = 'Oops ..!! Coupon already used'
+          res.redirect('/user-coupon')
+        } else {
+          console.log('else working');
+          console.log(req.session.user);
+          let userCoupon = { id: req.session.user._id }
+          coupon[0].users.push(userCoupon)
+          await coupon[0].save();
+          totalPrice = totalPrice - (totalPrice * coupon[0].discountPercentage) / 100;
+          console.log(totalPrice);
+          let couponApplied = true;
+          req.session.message = 'Coupon applied 🎁'
+          req.session.message1 = [couponApplied, totalPrice, totalQuantity]
+          res.redirect('/checkout')
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+
+  },
 
   //----------------------------------------------------------------//
 
@@ -427,10 +456,10 @@ module.exports = {
     console.log(phone.match(phoneformat))
     if (phone.match(phoneformat)) {
       next()
-      return res.redirect('/forgotOtp') //res.render('forgot-otp')            
+      return res.redirect('/forgotOtp')
     } else {
       req.session.message = 'Enter a valid phone number'
-      return res.redirect('/forgot') // res.render('forgotPass',{message:'Enter a valid phone number'})
+      return res.redirect('/forgot')
     }
   },
 
@@ -441,7 +470,7 @@ module.exports = {
     console.log(req.body.otp)
     if (req.body.otp == req.session.otpOne) {
       try {
-        return res.redirect('/changepass')// return res.render('changePass')
+        return res.redirect('/changepass')
       } catch (error) {
         console.log(error)
       }
@@ -451,7 +480,7 @@ module.exports = {
       })
     }
   },
-  
+
   changed: async (req, res) => {
     const existphone = await User.findOne({ phone: req.session.phone })
     console.log(existphone)
@@ -465,7 +494,7 @@ module.exports = {
         console.error(e)
       }
     } else {
-      return res.redirect('/changepass')// return res.render('changePass',{message:''})
+      return res.redirect('/changepass')
     }
   },
 
@@ -478,17 +507,17 @@ module.exports = {
       if (registeredUser && !blocked) {
         try {
           console.log(registeredUser.email + " " + registeredUser.password)
-          const pass_match = await bcrypt.compare(req.body.password, registeredUser.password)
+          const pass_match = await bcrypt.compare(req.body.password, registeredUser.password) || registeredUser.password
           console.log(req.body.password, registeredUser.password)
           if (pass_match) {
             req.session.auth = true
             req.session.email = req.body.email
             req.session.user = registeredUser
             console.log("hi\n" + req.session.user)
-            return res.redirect('/home') //res.render('home-page')
+            return res.redirect('/home')
           } else {
             req.session.message = 'Wrong Password'
-            return res.redirect('/login')// res.render('login',{message:'You are not a registered User'})
+            return res.redirect('/login')
           }
         } catch (error) {
           console.log(error)
@@ -496,7 +525,7 @@ module.exports = {
       }
       else {
         req.session.message = 'You have been blocked'
-        return res.redirect('/login')//res.render('login',{message:'You are not a registered User'})
+        return res.redirect('/login')
       }
     } catch (error) {
       req.session.message = 'No user Found'

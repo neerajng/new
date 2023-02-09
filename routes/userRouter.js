@@ -37,7 +37,9 @@ router.get('/order/success',userAuth.isLoggedIn,userController.orderSuccess)
 router.get('/order/user-order',userAuth.isLoggedIn,userController.getUserOrder)
 router.put('/order/cancel/:_id' ,userController.cancelOrder);
 
-
+router.get('/user-coupon', userAuth.isLoggedIn, userController.getCouponpage)
+router.post('/coupon',userController.applyCoupon)
+//=============================Coupon Feature===========================================//
 
 
 module.exports = router;

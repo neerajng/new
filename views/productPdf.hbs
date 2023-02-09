@@ -1,0 +1,22 @@
+{{> adminNavbar}}
+
+<section class="vh-100" style="width: 100%;" class="pdf">
+    <h2>DELIVER TOTAL PRODUCT SALES</h2>
+
+ <table class="product-report">
+        <thead>
+            <tr>
+            <td>Product Name</td>
+            <td>Total Amount</td>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each productSale}}
+            <tr>
+                <td> ->  {{_id}}</td>
+                <td>RS . {{totalAmount}}</td>
+            </tr>
+            {{/each}}                 
+        </tbody>
+    </table>
+</section>

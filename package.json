@@ -24,7 +24,9 @@
     "mongo-store": "^0.0.2",
     "mongoose": "^6.8.2",
     "multer": "^1.4.5-lts.1",
-    "razorpay": "^2.8.4"
+    "puppeteer": "^19.6.3",
+    "razorpay": "^2.8.4",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"

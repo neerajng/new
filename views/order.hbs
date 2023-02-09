@@ -2,7 +2,7 @@
 <section class="mt-2">
   <div class="row container-fluid m-0 bg-light p-4">
     <h5 class="pb-2">Current Address:</h5>
-    <div >
+    <div>
       {{#each user.address}}
       <input type="radio" class="pb-2" id="address" name="address" value="{{_id}}">
       {{houseName}},
@@ -102,7 +102,13 @@
               <span><strong class="order-price fa fa-inr">{{totalPrice}}</strong></span>
             </li>
           </ul>
-
+          {{#if couponApplied}}          
+          <div class="text-center py-3 mb-2"><a class="btn px-5 fw-bold text-success"
+              style="background:rgb(0, 255, 136);">{{couponMessage}}</a></div>
+          {{else}}
+          <div class="text-center py-3 mb-2"><a href="/user-coupon" class="btn px-5 fw-bold text-success"
+              style="background:rgb(0, 255, 136);">Apply Coupon</a></div>
+          {{/if}}
           <a class="btn btn-payment btn-warning btn-cod ms-4 mb-3">Cash On Delivery</a>
           <a class="btn btn-razor btn-danger btn-razor px-5 mb-3">Razor pay</a>
         </div>

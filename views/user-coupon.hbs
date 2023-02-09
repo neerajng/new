@@ -1,0 +1,15 @@
+{{> userNavbar}}
+ 
+<section class="vh-100 text-center mt-5">
+    <h1 class="mb-4">Apply Coupon</h1>
+    
+    <form action="/coupon" method="post" >
+        <div class="container" style="width:250px;">
+            <input class="form-control mb-3" type="text" name="coupon" placeholder="Enter coupon code" id="coupon">
+            <input class="btn btn-success px-5 mb-3" type="submit" value="Apply" id="coupon-input">
+        </div>
+    </form>  
+    
+    <p style="font-size: 1.2rem;">{{couponMessage}}</p>
+   
+</section>

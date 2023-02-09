@@ -1,0 +1,46 @@
+{{> adminNavbar}}
+{{> adminSidebar offers='offers'}}
+<div class="vh-100 pt-3">
+    <div class="container me-0 d-flex justify-content-between ">
+        <h1 class="ms-0">Offer Management</h1>
+        <div class="mt-5 me-5 mb-2">
+            <a class="btn btn-success" href="#">Create Offer</a>
+        </div>
+    </div>
+    <div class="container me-0">
+        <table class="table align-middle text-center" id="datatable">
+            <thead class="">
+                <tr class="text-center">
+                    <th class="text-center" style="width: 20%">Offer Type</th>
+                    <th class="text-center" style="width: 20%">Expiry</th>
+                    <th class="text-center" style="width: 20%">Discount</th>
+                    <th class="text-center" style="width: 20%">Purchase Amount</th>
+                    <th class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody class="table-success">
+                {{#each coupon}}
+                <tr>
+                    <td>{{couponCode}}</td>
+                    <td>{{expiryDate}}</td>
+                    <td>{{discountPercentage}}%</td>
+                    <td>{{minDiscountAmount}}</td>
+                    <td class="coupon-action">
+                        {{#if isAvailable}}
+                        <a data-url="{{_id}}" class="btn btn-success" >
+                            Block
+                        </a>
+                        {{else}}
+                        <a data-url="{{_id}}" class="btn btn-danger" >
+                            Unblock
+                        </a>
+                        {{/if}}
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+{{> dataTable}}
+
