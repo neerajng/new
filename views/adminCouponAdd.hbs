@@ -1,8 +1,15 @@
 {{> adminNavbar}}
+
+<div style="background-image: linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%);">
+<div class="container-fluid vh-100 pb-0 px-5">
+
+<div class="d-flex justify-content-between align-items-center">
+<h1 class="pt-3 ms-3 mb-4  fw-bolder text-dark">Add Coupon</h1>    
 {{> adminSidebar coupon='coupon'}}
-<div class="vh-100 pt-2  ">
-<div class="container me-0 mt-0 pt-2 pb-5">
-<h1>Add Coupon</h1>    
+</div>
+
+<div class="col col-sm-7">
+<div class="shadow bg-body-tertiary rounded-4 bg-white p-3 w-100">
 <form action="/admin/add-coupon" method="post">
   
 <div class="form-group col-md-6 mt-3">
@@ -27,4 +34,14 @@
 <button type="submit" class="btn btn-primary mt-4 px-5 btn-success">Create</button>
 </form>
 </div>
+</div>
+
+</div>
+<footer class="container text-lg-start me-0" style="font-size:12px">
+    <div class="text-center text-dark pb-5">
+      © 2023 Copyright:
+      <a class="text-dark text-decoration-none" href="#">ShopWine.com made with
+        <span class="text-danger fs-6">❤</span> by - Neeraj </a>
+    </div>
+  </footer>
 </div>

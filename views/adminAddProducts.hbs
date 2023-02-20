@@ -1,10 +1,16 @@
-<script defer src="https://cdn.crop.guide/loader/l.js?c=NWMWXY"></script>
+<script defer src="https://cdn.crop.guide/loader/l.js?c=HCGPBQ"></script>
 
 {{> adminNavbar}}
-{{> adminSidebar products='products'}}
-<div class="vh-100% pt-2  ">
-<div class="container me-0 mt-0 pt-2 pb-5">
-<h1>Add Products</h1>    
+<div style="background-image: linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%);">
+<div class="container-fluid vh-100% pb-0 px-5 ">
+
+<div class="d-flex justify-content-between align-items-center">
+<h1 class="pt-3 ms-3 mb-4  fw-bolder text-dark">Add Products</h1>   
+{{> adminSidebar products='products'}} 
+</div>  
+
+<div class="col col-sm-7">
+<div class="shadow bg-body-tertiary rounded-4 bg-white p-3 w-100">
 <form action="/admin/products/add" method="post" enctype="multipart/form-data">
   
 <div class="form-group col-md-6 mt-3">
@@ -18,7 +24,8 @@
   
   <div class="form-group col-md-6 mt-3">
     <p for="fileName" class="">Image</p>
-    <input multiple type="file" class="form-control-file" name="fileName" id="fileName">
+    <input multiple type="file" class="form-control-file pb-3" name="fileName" id="fileName" onchange="viewImage(event)">
+    <img src="" alt="" style="width:100px;height:auto" id="imgView">
   </div>
 
   <div class="form-row">
@@ -44,6 +51,31 @@
      </div>  
   </div>
   <button type="submit" class="btn btn-primary mt-4 px-5 btn-success">Add</button>
+  {{#if message}}
+  <div class="mt-4">
+    <h6 class="text-danger">{{message}}</h6>
+  </div>
+  {{/if}}
 </form>
 </div>
+</div>
+
+</div>
+<div class="my-5 py-5 dummydivforspace">
+  <div></div>
+</div>
+<footer class="container text-lg-start me-0 " style="font-size:12px">
+    <div class="text-center text-dark pb-5">
+      © 2023 Copyright:
+      <a class="text-dark text-decoration-none" href="#">ShopWine.com made with
+        <span class="text-danger fs-6">❤</span> by - Neeraj </a>
+    </div>
+  </footer>
+
+<script>
+  function viewImage(event){
+    document.getElementById('imgView').src=URL.createObjectURL(event.target.files[0])
+  }
+</script>
+
 </div>

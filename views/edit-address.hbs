@@ -1,0 +1,85 @@
+ {{> userNavbar}}
+ <div style="background-image: linear-gradient(to top, #bdc2e8 0%, #bdc2e8 1%, #e6dee9 100%);">
+
+ <div class="row container-fluid px-5">
+     {{!-- heading --}}
+<div class="d-flex justify-content-between align-items-center">
+<h1 class="pt-3 ms-3 mb-4 fw-bolder text-dark">Update Address</h1>
+</div>
+    <div class=" col-md-8 mb-4">
+      <div class="card mb-4 shadow bg-body-tertiary rounded-4 bg-white p-3">
+        <div class="card-header py-3">
+          <h5 class="mb-0">Delivery Address</h5>
+        </div>
+        <div class="card-body">
+
+          <form id="updateAddress">
+            <div class="row mb-4">
+              <!-- Text input -->
+              <div class="form-outline mb-4">
+                <input type="text" id="houseName" class="form-control" name="houseName" value="{{addressObj.houseName}}" required />
+                <label class="form-label" for="form7Example3">House Name</label>
+              </div>
+
+              <!-- Text input -->
+              <div class="form-outline mb-1">
+                <input type="text" id="phone" name="phone"  value="{{addressObj.phone}}" class="form-control" required />
+                <label class="form-label" for="form7Example3">Phone</label>
+              </div>
+            </div>
+
+            <!-- Row 1 -->
+            <div class="row mb-4">
+              <!-- City input -->
+              <div class="form-group col-md-6">
+                <input type="text" id="city" name="city" value="{{addressObj.city}}" class="form-control" required />
+                <label class="form-label" for="form7Example4">City</label>
+              </div>
+
+              <!-- Postal Code input -->
+              <div class="form-group col-md-6">
+                <input type="text" id="postalCode" name="postalCode" value="{{addressObj.postalCode}}" class="form-control" required />
+                <label class="form-label" for="form7Example4">Postal Code</label>
+              </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="row mb-4">
+              <!-- State input -->
+              <div class="form-group col-md-6">
+                <input type="text" id="state" name="state" value="{{addressObj.state}}" class="form-control" required />
+                <label class="form-label" for="form7Example4">State</label>
+              </div>
+
+              <!-- Country input -->
+              <div class="form-group col-md-6">
+                <input type="text" id="country" name="country" value="{{addressObj.country}}" class="form-control" required />
+                <label class="form-label" for="form7Example4">Country</label>
+              </div>
+            </div>
+
+
+            <div class="form-check d-flex justify-content-center mb-2">
+                <button type='submit' data-url={{addressObj._id}} onclick="editAddress(event)" class="btn mt-4 px-5 btn-warning">Update</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+    
+  </div>
+  <div class="my-5 py-2 dummydivforspace">
+        <div></div>
+    </div>
+
+    <footer class="container-fluid text-lg-start" style="font-size:12px">
+        <div class="text-center text-black pb-5 fw-normal">
+            © 2023 Copyright:
+            <a class="text-black text-decoration-none" href="#">ShopWine.com made with
+                <span class="text-danger fs-6">❤</span> by - Neeraj </a>
+        </div>
+    </footer>
+  </div>
+  <script src="/javascript/order.js"></script>

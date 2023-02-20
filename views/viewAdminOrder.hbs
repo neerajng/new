@@ -1,0 +1,37 @@
+{{> adminNavbar}}
+<div style="background-image: linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%);">
+    <div class="container-fluid vh-100% pb-0 px-5">
+
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="pt-3 ms-3 mb-4 fw-bolder text-dark">Order Details</h1>
+            {{> adminSidebar orders='orders'}}
+        </div>
+
+        <div class="shadow bg-body-tertiary rounded-4 bg-white p-3">
+            <ul>
+                {{#each arr}}
+                <li>
+                    <h3 class="fw-bolder mb-2">{{name}}</h3>                    
+                    <img class="rounded mb-3" src="{{image}}" alt="{{name}}" width="16%" height="16%">
+                    <p>{{description}}</p>
+                    <p>Price: <span class="fw-bold">{{price}}</span></p>
+                    <p>Category: <span class="fw-bold">{{category.[0].name}}</span></p>
+                    <p>Quantity: <span class="fw-bold">{{quantity}}</span></p>
+                    <hr>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+
+    </div>
+    <div class="my-5 py-5 dummydivforspace">
+        <div></div>
+    </div>
+    <footer class="container-fluid text-lg-start" style="font-size:12px">
+        <div class="text-center text-black pb-5 fw-normal">
+            © 2023 Copyright:
+            <a class="text-black text-decoration-none" href="#">ShopWine.com made with
+                <span class="text-danger fs-6">❤</span> by - Neeraj </a>
+        </div>
+    </footer>
+</div>

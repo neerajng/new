@@ -1,139 +1,242 @@
-
 {{> userNavbar}}
 
-<section style="background-color: #eee;">
-    <h1 class="text-center fluid bg-success text-light py-1">Profile</h1>
+<div style="background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);">
+    <section>
+        <h1 style="background-image: linear-gradient(to top, #0ba360 0%, #3cba92 100%);"
+            class=" fw-bolder shadow bg-body-tertiary rounded-4 text-center fluid text-light py-1 rounded-pill mx-2">
+            Profile</h1>
 
-    <div class="container py-5">
+        <div class="container py-5">
 
-        <div class="row">
+            <div class="row">
 
-            <div class="col-lg-8">
-                <div class="card mb-4">
-                    {{#each user}}
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <p class="mb-0">Full Name</p>
+                <div class="col-lg-8">
+                    <div class="card mb-4 shadow bg-body-tertiary rounded-4 bg-white border-white">
+                        {{#each user}}
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Full Name</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{firstname}} {{lastname}}</p>
+                                </div>
                             </div>
-                            <div class="col-sm-9">
-                                <p class="text-muted mb-0">{{firstname}} {{lastname}}</p>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Email</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{email}}</p>
+                                </div>
                             </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Phone</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{phone}}</p>
+                                </div>
+                            </div>
+
                         </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <p class="mb-0">Email</p>
-                            </div>
-                            <div class="col-sm-9">
-                                <p class="text-muted mb-0">{{email}}</p>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <p class="mb-0">Phone</p>
-                            </div>
-                            <div class="col-sm-9">
-                                <p class="text-muted mb-0">{{phone}}</p>
-                            </div>
-                        </div>
-
+                        {{/each}}
                     </div>
-                    {{/each}}
                 </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="card bg-success mb-4 py-2">
-                     <div class="btn btn-success  ">
-                            <a href="#" class="text-decoration-none text-white">My Orders</a>
+                <div class="col-lg-4">
+                    <div class="card bg-success mb-4 py-2">
+                        <div class="btn btn-success  ">
+                            <a href="#myod" class="text-decoration-none text-white ">My Orders</a>
                         </div>
                         <div class="btn btn-success  ">
-                            <a href="#" class="text-decoration-none text-white">Change Profile </a>
+                            <a href="/" class="text-decoration-none text-white">Go to Shop</a>
                         </div>
                         <div class="btn btn-success">
-                            <a href="#" class="text-decoration-none text-white">Change Password</a>
+                            <a href="/forgot" class="text-decoration-none text-white">Change Password</a>
                         </div>
                         <div class="btn btn-success ">
                             <a href="/logout" class="text-decoration-none text-white">LogOut</a>
                         </div>
-                    
-                </div>
 
+                    </div>
+
+                </div>
             </div>
         </div>
-    </div>
-</section>
-<h1 class="text-center fluid bg-warning text-light py-1">My Orders</h1>
-<div class="container mt-5 vh-100% pb-5">
-    <table class="table  main text-center table-striped userorder-container">
-        <thead>
-            <tr class="head">            
-                <th scope="col">HOME</th>
-                <th scope="col">PHONE</th>
-                <th scope="col">PINCODE</th>
-                <th scope="col">ADDRESS</th>
-                <th scope="col">STATUS</th>
-                <th scope="col">PAYMENT</th>
-                <th scope="col">TOTAL</th>
-                <th scope="col">ACTION</th>
-            </tr>
-        </thead>
-        <tbody>
-            
-            <tr class="rounded bg-white">
-               {{#each order}}
-                               
-                <td>{{shippingInfo.houseName}}</td>
-                <td >{{shippingInfo.phone}}</td>               
-                <td>{{shippingInfo.postalCode}}</td>
-                <td>{{shippingInfo.city}},{{shippingInfo.state}} , {{shippingInfo.country}}</td>
-                <td>
-                   {{#if isDelivered}}
-                    Delivered
-                    {{else}}
-                    {{#if isCancelled}}
-                    Cancelled
-                    {{else}}
-                    Processing
-                    {{/if}}
-                    {{/if}} 
-                </td>
-                <td>
-                    {{paymentMode}}
-                </td>
-                <td>
-                    Rs.{{totalAmount}}/-
-                </td>
+    </section>
+    <h1 id="myod"
+        style="background-image: linear-gradient(to top, #0c3483 0%, #a2b6df 100%, #6b8cce 100%, #a2b6df 100%);"
+        class="fw-bolder text-center fluid text-light py-1 rounded-pill mb-4 mx-2 ">My Orders</h1>
+    <div class="container-fluid vh-100 pb-0 px-5 ">
+        <div class="shadow bg-body-tertiary rounded-4 bg-white p-3 pb-5 ">
+            <table class="main text-center " id="datatable">
+                <thead>
+                    <tr class="head">
+                        <th class="text-center">HOME</th>
+                        <th class="text-center">PHONE</th>
+                        <th class="text-center">PINCODE</th>
+                        <th class="text-center">ADDRESS</th>
+                        <th class="text-center">PAYMENT</th>
+                        <th class="text-center">TOTAL</th>
+                        <th class="text-center">STATUS</th>
+                        <th class="text-center">ACTION</th>
+                        <th class="text-center">VIEW</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-                {{!-- cancel order --}}
-                <td >
-                    {{#if isDelivered}}
-                <div class="order-cancel">
-                    <a class="success">Success</a>
-                </div>
-                {{else}}
-                <div class="order-cancel">
-                    {{#if isDelivered}}
-                    <a class="success">Processed</a>
-                    {{else}}
-                    {{#if isCancelled}}
-                    <a class=" " style="height:5rem; width:2rem; color:red; border-radius:10px">Cancelled</a>
-                    {{else}}
-                    <a data-url="{{_id}}" class="btn order-cancel-btn btn-danger">
-                        Cancel Order
-                    </a>
-                    {{/if}}
-                    {{/if}}
-                </div>
-                {{/if}}
-                </td>
-                {{!-- cancel order --}}
-            </tr> 
-            {{/each}}      
-        </tbody>
-        
-    </table>
-    <hr>
+                    <tr class="rounded bg-white">
+                        {{#each order}}
+
+                        <td>{{shippingInfo.houseName}}</td>
+                        <td>{{shippingInfo.phone}}</td>
+                        <td>{{shippingInfo.postalCode}}</td>
+                        <td>{{shippingInfo.city}},{{shippingInfo.state}} ,{{shippingInfo.country}}</td>
+
+                        <td>
+                            {{paymentMode}}
+                        </td>
+                        <td>
+                            Rs.{{totalAmount}}/-
+                        </td>
+                        
+                        {{!1-- status management--}}
+                        <td>
+                            {{#if isDelivered}}
+                            Delivered
+                            {{else}}
+                            {{#if isCancelled}}
+                            Cancelled
+                            {{else}}
+                            {{#if (logand isReturned (eq isReturnStatus false))}}
+                            Return in process
+                            {{else}}
+                            {{#if (logand isReturnStatus isReturned)}}
+                            Returned
+                            {{else}}
+                            Processing
+                            {{/if}}
+                            {{/if}}
+                            {{/if}}
+                            {{/if}}
+                        </td>
+                        {{!0-- status management--}}
+
+                        {{!1-- order management--}}
+                        <td>                          
+                        {{#if isDelivered}}
+                            <!-- Dropdown button -->
+                                <div class="btn-group">
+                                <button type="button" class="rounded-pill px-4 btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Action
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                    <!-- Button trigger modal -->
+                                    <a class="btn px-5 text-info" data-bs-toggle="modal" data-bs-target="#{{_id}}">Return</a>                                    
+                                    </li>
+                                </ul>
+                                </div>
+                                <!-- Modal -->
+                                    <div class="modal fade" id="{{_id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                            Are you sure you want to return the order?
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button data-url="{{_id}}" onclick="returnOrder(event)" type="button" class="btn btn-info text-white px-3" >OK</button>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                        {{else}}
+                        {{#if isCancelled}}          
+                                <div class="btn-group">
+                                <button disabled type="button" class="rounded-pill px-4 btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Action
+                                </button>                                
+                                </div>                                  
+                        {{else}}
+                        {{#if (logand isReturned (eq isReturnStatus false))}}      
+                                <div class="btn-group">
+                                <button disabled type="button" class="rounded-pill px-4 btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Action
+                                </button>                                
+                                </div>
+                        {{else}}
+                        {{#if (logand isReturnStatus isReturned)}}
+                                <div class="btn-group">
+                                <button disabled type="button" class="rounded-pill px-4 btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Action
+                                </button>                                
+                                </div>                                
+                        {{else}}              
+                        <!-- Dropdown button -->
+                                <div class="btn-group">
+                                <button type="button" class="rounded-pill px-4 btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Action
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                    <!-- Button trigger modal -->
+                                    <a class="btn px-5 text-danger" data-bs-toggle="modal" data-bs-target="#{{_id}}">Cancel</a>                                    
+                                    </li>
+                                </ul>
+                                </div>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="{{_id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                            Are you sure you want to cancel the order?
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button data-url="{{_id}}" onclick="cancelOrder(event)" type="button" class="btn btn-danger px-3" >OK</button>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                        
+                        {{/if}}                                       
+                        {{/if}}
+                        {{/if}}
+                        {{/if}}
+                        </td>
+                        {{!^-- order management ^^--}}
+                        <td>
+                            <a href="/view-order/{{{_id}}}" class="btn text-black fa-solid fa-eye"></a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+
+            </table>
+            <hr>
+        </div>
+    </div>
+    <div class="my-5 py-4 dummydivforspace">
+        <div></div>
+    </div>
+    <footer class="container-fluid text-lg-start" style="font-size:12px">
+        <div class="text-center text-black pb-5 fw-normal">
+            © 2023 Copyright:
+            <a class="text-black text-decoration-none" href="#">ShopWine.com made with
+                <span class="text-danger fs-6">❤</span> by - Neeraj </a>
+        </div>
+    </footer>
 </div>
-<script src="/javascript/order.js"></script>
+{{> dataTable}}
+<script src="/javascript/orderMgmt.js"></script>

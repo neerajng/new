@@ -33,4 +33,7 @@
 body{
     overflow-x: hidden;
     position: relative;
+    font-size: 14px;
+    font-family: 'Poppins';
 }
+

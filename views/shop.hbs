@@ -1,0 +1,98 @@
+{{> userNavbar}}
+<div id="carouselExample" class="carousel slide">
+  <div class="carousel-inner">
+    <div class="carousel-item active bg-dark">
+      <img src="https://www.bluenotewine.com.hk/pub/media/wysiwyg/en/banner-slider-odfjell-awards.jpg" 
+       height="250rem" style="overflow:hidden; object-fit: scale-down; "class="d-block w-100 " alt="...">
+    </div>
+    <div class="carousel-item bg-dark">
+      <img src="https://static.vecteezy.com/system/resources/previews/003/030/643/original/white-wine-bottle-glass-banner-illustration-free-vector.jpg" 
+       height="250rem" style="overflow:hidden; object-fit: contain;"class="d-block w-100 " alt="...">
+    </div>
+    <div class="carousel-item bg-dark">
+      <img src="https://www.bluenotewine.com.hk/pub/media/wysiwyg/en/banner-slider-volpi.jpg" 
+       height="250rem" style="overflow:hidden; object-fit: contain;"class="d-block w-100 " alt="...">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+<div style="background-image: linear-gradient(to top, #bdc2e8 0%, #bdc2e8 1%, #e6dee9 100%);">
+    <div class="pb-5  pt-1">
+        <section class="py-1 my-5 mx-4">
+
+            <div class="px-4 px-lg-5 ">
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center shadow bg-body-tertiary rounded-4 bg-white p-3 ">
+                    <div class="input-group d-flex justify-content-end search ">
+                        <div class="form-outline">
+                            <input type="text" name="search" id="search-input" autocomplete="off" value="{{search}}" class="form-control" placeholder="Search" />                            
+                        </div>                        
+                        <input type="submit" value="Search" class="px-1 btn btn-info text-white mb-5 btn-srch">                        
+                    </div>
+                    {{#each productList}}
+                    {{#if (eq isBlocked false)}}
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Product image-->
+                            <a href="/singleProduct/{{_id}}"><img class="card-img-top"
+                                    src="{{image}}" alt="Sample" /></a>
+                            <!-- Product details-->
+                            <div class="card-body p-auto">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">{{name}}</h5>
+                                    <!-- Product price-->
+                                    <p class=""><i class="fa fa-inr fw-2" aria-hidden="true"></i><b>{{price}}</b></p>
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer py-4 pt-0 border-top-0 bg-transparent row ">
+                                <div class="text-center col"><a class="btn btn-outline-primary mt-auto "
+                                        href="/singleProduct/{{_id}}">View Details</a></div>
+                                <div class="text-center col"><a onclick='addToCart(event)' data-url={{_id}}
+                                        class="btn btn-outline-danger mt-auto" id="liveToastBtn-{{_id}}">Add to cart</a>
+                                </div>
+                                <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                                    <div id="liveToast" class="toast" role="alert" aria-live="assertive"
+                                        aria-atomic="true">
+                                        <div class="toast-header">
+                                            <img src="https://thumbs.dreamstime.com/b/shopping-cart-icon-flat-style-any-projects-use-website-mobile-app-presentation-204446201.jpg"
+                                                width="30px" height="30px" class="rounded me-2" alt="...">
+                                            <strong class="me-auto text-success">Notification</strong>
+                                            <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="toast-body text-success">
+                                            Product has been added to cart.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{/if}}
+                    {{/each}}
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="my-5 py-2 dummydivforspace">
+        <div></div>
+    </div>
+
+    <footer class="container-fluid text-lg-start" style="font-size:12px">
+        <div class="text-center text-black pb-5 fw-normal">
+            © 2023 Copyright:
+            <a class="text-black text-decoration-none" href="#">ShopWine.com made with
+                <span class="text-danger fs-6">❤</span> by - Neeraj </a>
+        </div>
+    </footer>
+</div>
+<script src="/javascript/user-products.js"></script>

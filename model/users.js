@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 
 const userSchema = new mongoose.Schema({
   firstname: {
     type: String,
-    required: [true, 'First name cannot be empty'],
+    required: [true, 'First name cannot be empty']
   },
   lastname: {
     type: String,
@@ -18,8 +18,8 @@ const userSchema = new mongoose.Schema({
   phone: {
     type: String,
     required: [true, 'Phone number cannot be empty'],
-    minlength: [10, `Phone number must be 10 digits`],
-    maxlength: [10, `Phone number must be 10 digits`]
+    minlength: [10, 'Phone number must be 10 digits'],
+    maxlength: [10, 'Phone number must be 10 digits']
   },
   password: {
     type: String,
@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema({
     {
       id: {
         type: mongoose.SchemaTypes.ObjectId,
-        ref: "Product"
+        ref: 'Product'
       },
       quantity: {
         type: Number
@@ -48,50 +48,48 @@ const userSchema = new mongoose.Schema({
   ],
   address: [
     {
-        houseName: {
-          type : String ,
-          required: true
-        } ,
-        phone: {
-          type : Number ,
-          required: true
-        },
-        city: {
-          type : String ,
-          required: true
-        } ,
-        postalCode: {
-          type : String ,
-          required: true
-        },
-        state: {
-          type : String ,
-          required: true
-        },
-        country: {
-          type : String ,
-          required: true
-        }
+      houseName: {
+        type: String,
+        required: true
+      },
+      phone: {
+        type: Number,
+        required: true
+      },
+      city: {
+        type: String,
+        required: true
+      },
+      postalCode: {
+        type: String,
+        required: true
+      },
+      state: {
+        type: String,
+        required: true
+      },
+      country: {
+        type: String,
+        required: true
+      }
     }
-  ] 
+  ]
 })
 
 userSchema.pre('save', async function (next) {
   try {
     if (this.isModified('password')) {
-      hashedPassword = await bcrypt.hash(this.password, 10)
+      const hashedPassword = await bcrypt.hash(this.password, 10)
       this.password = hashedPassword
-      next();
+      next()
     } else {
-      next();
+      next()
     }
   } catch (error) {
     console.log(error)
   }
 })
 
+const User = mongoose.model('User', userSchema)
 
-
-const User = mongoose.model('User', userSchema);
-
-module.exports = { User };
+module.exports = { User }

@@ -1,3 +1,4 @@
+/* eslint-disable */
 console.log("working");
 /**
  * ImageZoom Plugin

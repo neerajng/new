@@ -1,21 +1,28 @@
 {{> adminNavbar}}
-{{> adminSidebar coupon='coupon'}}
-<div class="vh-100 pt-3">
-    <div class="container me-0 d-flex justify-content-between ">
-        <h1 class="ms-0">Coupon Management</h1>
-        <div class="mt-5 me-5 mb-2">
-            <a class="btn btn-success" href="/admin/add-coupon">Create Coupon</a>
+
+<div style="background-image: linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%);">
+
+<div class="container-fluid vh-100 pb-0 px-5">   
+
+        <div class="d-flex justify-content-between align-items-center">
+        <h1 class="pt-3 ms-3 mb-4 fw-bolder text-dark">Coupon Management</h1>
+        {{> adminSidebar coupon='coupon'}}
         </div>
-    </div>
-    <div class="container me-0">
-        <table class="table align-middle text-center" id="datatable">
+
+        <div class="mb-2 d-flex justify-content-end">
+            <a class="btn btn-success px-3 rounded-pill" href="/admin/add-coupon">Create Coupon</a>
+        </div>
+
+   
+    <div class="shadow bg-body-tertiary rounded-4 bg-white p-3"> 
+        <table class="align-middle text-center" id="datatable">
             <thead class="">
                 <tr class="text-center">
-                    <th class="text-center" style="width: 20%">Coupon Code</th>
-                    <th class="text-center" style="width: 20%">Expiry</th>
-                    <th class="text-center" style="width: 20%">Discount</th>
-                    <th class="text-center" style="width: 20%">Purchase Amount</th>
-                    <th class="text-center">Action</th>
+                    <th class="text-center" >Coupon Code</th>
+                    <th class="text-center" >Expiry</th>
+                    <th class="text-center" >Discount</th>
+                    <th class="text-center" >Purchase Amount</th>
+                    <th class="text-center w-25">Action</th>
                 </tr>
             </thead>
             <tbody class="table-success">
@@ -27,11 +34,11 @@
                     <td>{{minDiscountAmount}}</td>
                     <td class="coupon-action">
                         {{#if isAvailable}}
-                        <a data-url="{{_id}}" class="btn btn-success" onclick='couponActivate(event)'>
+                        <a data-url="{{_id}}" class="btn btn-success px-4 rounded-pill" onclick='couponActivate(event)'>
                             Block
                         </a>
                         {{else}}
-                        <a data-url="{{_id}}" class="btn btn-danger" onclick='couponActivate(event)'>
+                        <a data-url="{{_id}}" class="btn btn-danger px-3 rounded-pill" onclick='couponActivate(event)'>
                             Unblock
                         </a>
                         {{/if}}
@@ -41,6 +48,19 @@
             </tbody>
         </table>
     </div>
+
+</div>
+<div class="my-5 py-5 dummydivforspace">
+  <div></div>
+</div>
+
+<footer class="container-fluid text-lg-start" style="font-size:12px" >
+<div class="text-center text-black pb-5 fw-normal">
+  © 2023 Copyright:  
+  <a class="text-black text-decoration-none" href="#">ShopWine.com made with 
+    <span class="text-danger fs-6">❤</span> by - Neeraj </a>
+</div>
+</footer> 
 </div>
 {{> dataTable}}
 

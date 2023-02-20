@@ -1,18 +1,51 @@
-const basepath = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`
-async function cancelOrder(e) {
-    console.log('ko')
-    const id = await e.target.dataset.url
-    const url = `${basepath}/admin/admin-order-cancel/${id}`;
-    console.log(url)
-    alert('are you sure to cancel the order ? ')
-    const res = await fetch(url, {
-        method: 'PUT',
-        credentials: "same-origin",
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
+/* eslint-disable no-unused-vars */
+/* eslint-disable indent */
 
-    const redirectPath = await res.json()
-    window.location.href = redirectPath.redirect
+// admin delivers order
+async function deliverOrder (e) {
+  const orderId = await e.target.dataset.url
+  const url = `/admin/admin-deliver-order/${orderId}`
+  const res = await fetch(url, {
+      method: 'PUT',
+      credentials: 'same-origin',
+      headers: {
+          'Content-Type': 'application/json'
+      }
+  })
+
+  const redirectPath = await res.json()
+  window.location.href = redirectPath.redirect
+}
+
+// admin cancels order
+async function cancelOrder (e) {
+  const id = await e.target.dataset.url
+  const url = `/admin/admin-order-cancel/${id}`
+  console.log(url)
+  const res = await fetch(url, {
+    method: 'PUT',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+
+  const redirectPath = await res.json()
+  window.location.href = redirectPath.redirect
+}
+
+async function returnOrder (e) {
+  const orderId = await e.target.dataset.url
+  const url = `/admin/admin-return-order/${orderId}`
+  console.log(url)
+  const res = await fetch(url, {
+      method: 'PUT',
+      credentials: 'same-origin',
+      headers: {
+          'Content-Type': 'application/json'
+      }
+  })
+
+  const redirectPath = await res.json()
+  window.location.href = redirectPath.redirect
 }

@@ -1,63 +1,83 @@
 {{> adminNavbar}}
-{{> adminSidebar Category='Category'}}
-<div class="vh-100">
-  <div class="container me-0 d-flex justify-content-between">
-    <h1 class="ms-0 pt-3">Category Management</h1>
-    <div class="mt-5 me-5 mb-2">
-      <a class="btn btn-success" href="/admin/addcategory">Add Category</a>
+
+<div style="background-image: linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%);">
+
+  <div class="container-fluid vh-100 pb-0 px-5">
+
+    <div class="d-flex justify-content-between align-items-center">
+      <h1 class="pt-3 ms-3 mb-4  fw-bolder text-dark">Category Management</h1>
+      {{> adminSidebar Category='Category'}}
     </div>
-  </div>
-  <div class="container me-0">
-    <table class="table align-middle text-center" id="datatable">
-      <thead>
-        <tr>
-          <th class="text-center" style="width: 25%">Category Name</th>
-          {{!-- <th style="width: 20%">Icon</th> --}}
-          <th class="text-center" style="width: 23%">Action</th>
-        </tr>
-      </thead>
-      <tbody class="table-success">
-        {{#each categoryList}}
-        <tr>
-          <td>
-            <p class="mx-0 mb-1">{{name}}</p>
-          </td>
-          <td class="text-center">
-            <ul class="d-flex justify-content-center" style="list-style-type: none;">
-              <li class="px-lg-0">
-                {{#if isBlocked}}
-                <!-- Button trigger modal -->
-                <a class="btn btn-success" data-bs-toggle="modal" id="delete" data-bs-target="#{{_id}}">Add</a>
-                {{else}}
-                <a class="btn btn-danger" data-bs-toggle="modal" id="delete" data-bs-target="#{{_id}}">Delete</a>
-                {{/if}}
-                <!-- Modal -->
-                <div class="modal fade" id="{{_id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
-                  aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered ">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body">
-                        Are you sure you want to proceed?
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success px-3" onclick="deletecat(event)" data-url={{_id}}>OK</button>
+
+    <div class="col col-sm-7">
+
+      <div class="mb-2 d-flex justify-content-end">
+        <a class="btn btn-success px-3 rounded-pill" href="/admin/addcategory">Add Category</a>
+      </div>
+
+      <div class="shadow bg-body-tertiary rounded-4 bg-white p-3 w-100">
+        <table class="text-center bg-white" id="datatable">
+          <thead>
+            <tr>
+              <th class="text-center ">Category Name</th>
+              <th class="text-center ">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each categoryList}}
+            <tr>
+              <td>
+                <p class="mx-0 mb-1">{{name}}</p>
+              </td>
+              <td class="text-center">
+                <ul class="d-flex justify-content-center pe-4" style="list-style-type: none;">
+                  <li class="px-lg-0">
+                    {{#if isBlocked}}
+                    <!-- Button trigger modal -->
+                    <a class="btn btn-success px-4 rounded-pill" data-bs-toggle="modal" id="delete"
+                      data-bs-target="#{{_id}}">Add</a>
+                    {{else}}
+                    <a class="btn btn-danger px-3 rounded-pill" data-bs-toggle="modal" id="delete"
+                      data-bs-target="#{{_id}}">Delete</a>
+                    {{/if}}
+                    <!-- Modal -->
+                    <div class="modal fade" id="{{_id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                      aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered ">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            Are you sure you want to proceed?
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success px-3" onclick="deletecat(event)"
+                              data-url={{_id}}>OK</button>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </td>
-        </tr>
-        {{/each}}
-      </tbody>
-    </table>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
   </div>
+  <footer class="container text-lg-start me-0" style="font-size:12px">
+    <div class="text-center text-dark pb-5">
+      © 2023 Copyright:
+      <a class="text-dark text-decoration-none" href="#">ShopWine.com made with
+        <span class="text-danger fs-6">❤</span> by - Neeraj </a>
+    </div>
+  </footer>
 </div>
 {{> dataTable}}
 <script src="/javascript/deleteCategory.js"></script>

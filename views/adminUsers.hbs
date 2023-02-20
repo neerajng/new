@@ -1,18 +1,24 @@
 {{> adminNavbar}}
+<div style="background-image: linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%);">
+<div class="container-fluid vh-100 pb-0 px-5">
+
+<div class="d-flex justify-content-between align-items-center">  
+<h1 class="pt-3 ms-3 mb-4 fw-bolder text-dark">User Management</h1>
 {{> adminSidebar users='users'}}
-<div class="container me-0 vh-100 pb-0" >
-<h1 class="pt-3">User Management</h1>
-<table class="table text-center " id="datatable" >
+</div>
+
+<div class="shadow bg-body-tertiary rounded-4 bg-white p-3">
+<table class="text-center bg-white" id="datatable"  >
   <thead >
-    <tr>
-      <th class="text-center" scope="col">First Name</th>
-      <th class="text-center" scope="col">Last Name</th>
-      <th class="text-center" scope="col">Email</th>
-      <th class="text-center" scope="col">Phone</th>
-      <th class="text-center" scope="col">Action</th>
+    <tr >
+      <th class="text-center">First Name</th>
+      <th class="text-center">Last Name</th>
+      <th class="text-center">Email</th>
+      <th class="text-center">Phone</th>
+      <th class="text-center">Action</th>
     </tr>
   </thead>
-  <tbody class="table-success">
+  <tbody >
     {{#each users}}
     <tr>
       <td>{{firstname}}</td>
@@ -22,10 +28,10 @@
       <td>
         {{#if isBlocked}}
 <!-- Button trigger modal -->
-<button class="btn btn-success px-4" data-bs-toggle="modal" data-bs-target="#{{_id}}">Unblock</button>
+<button class="btn btn-success px-3 rounded-pill" data-bs-toggle="modal" data-bs-target="#{{_id}}">Unblock</button>
         {{else}}
 <!-- Button trigger modal -->
-<button class="btn btn-danger px-4" data-bs-toggle="modal" data-bs-target="#{{_id}}">Block</button>
+<button class="btn btn-danger px-4 rounded-pill" data-bs-toggle="modal" data-bs-target="#{{_id}}">Block</button>
         {{/if}}
 <!-- Modal -->
           <div class="modal fade" id="{{_id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -51,6 +57,17 @@
   </tbody>  
 </table>
 </div>
+
+</div>
+<footer class="container-fluid text-lg-start" style="font-size:12px" >
+<div class="text-center text-black pb-5 fw-normal">
+  © 2023 Copyright:  
+  <a class="text-black text-decoration-none" href="#">ShopWine.com made with 
+    <span class="text-danger fs-6">❤</span> by - Neeraj </a>
+</div>
+</footer> 
+</div>
+
 {{> dataTable}}
 <script src="/javascript/blockUser.js"></script>
 

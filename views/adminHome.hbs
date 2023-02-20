@@ -1,63 +1,167 @@
 {{> adminNavbar}}
+
+<div style="background-image: linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%);">
+{{!-- container --}}    
+<div class="container-fluid vh-100% pb-0 px-5">
+
+{{!-- heading --}}
+<div class="d-flex justify-content-between align-items-center">
+<h1 class="pt-3 ms-3 mb-4 fw-bolder text-dark">Dash Board</h1>
 {{> adminSidebar home='home'}}
-<div class="container me-0 pt-5 vh-100% mb-5">
-    <div class="row ">
-        <div class="col-lg-6 mb-4">
-            <div class="card">
-                <img class="card-img-top" src="" alt="">
+</div>
+<div class="d-flex justify-content-end pe-5 rounded-pill mt-3">
+    <a class="btn btn-danger rounded-pill px-4 fs-6 shadow bg-body-tertiary rounded-4" href="/admin/excel-Data">Download Report</a>
+</div>
 
-                <div class="card-body">
-                    <h5 class="card-title">User Management</h5>
-                    <p class="card-text">
-                        Manage user access to your account.Add, edit and delete users.
-                    </p>
-
-                    <a href="/admin/users" class="btn btn-outline-primary btn-sm">
-                        Go to page
-                    </a>
-
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6 mb-4">
-            <div class="card">
-                <img class="card-img-top" src="" alt="">
-
-                <div class="card-body">
-                    <h5 class="card-title">Product Managemet</h5>
-                    <p class="card-text">
-                        Manage products in your site.Add, edit and delete products.
-                    </p>
-
-                    <a href="/admin/products" class="btn btn-outline-primary btn-sm">
-                        Go to page
-                    </a>
-
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6 mb-4">
-            <div class="card">
-                <img class="card-img-top" src="" alt="">
-
-                <div class="card-body">
-                    <h5 class="card-title">Category management</h5>
-                    <p class="card-text">
-                        Manage Category of each products.
-                    </p>
-
-                    <a href="/admin/category" class="btn btn-outline-primary btn-sm">
-                        Go to page
-                    </a>
-
-                </div>
-            </div>
-        </div>
+{{!-- Totals --}}
+<div class="row row-cols-1 row-cols-md-4 g-4 mt-3 ">
+  <div class="col">
+    <div class="card p-3 shadow bg-body-tertiary rounded-4 bg-white text-center border border-white">
+      <i class="fs-1 fa-solid fa-money-check-dollar"></i>
+      <h3>Total Income</h3>
+      <h4>{{totalIncome}}</h4>
+      
+      
     </div>
-<div class="container">    
+  </div>
+
+  <div class="col">
+    <div class="card p-3 shadow bg-body-tertiary rounded-4 bg-white text-center border border-white">
+     <i class="fs-1 fa-solid fa-users"></i> 
+      <h3>Customers</h3>
+      <h4>{{totalCustomer}}</h4>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card p-3 shadow bg-body-tertiary rounded-4 bg-white text-center border border-white">
+      <i class="fs-1 fa-solid fa-truck-fast"></i>
+      <h3>Products</h3>
+      <h4>{{totalProduct}}</h4>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card p-3 shadow bg-body-tertiary rounded-4 bg-white text-center border border-white">
+        <i class="fs-1 fa-solid fa-receipt"></i>
+      <h3>Total Order</h3>
+      <h4>{{totalOrder}}</h4>      
+      
+    </div>
+  </div>
+</div>
+
+<div class="my-1 py-1 dummydivforspace">
+  <div></div>
+</div>
+{{!-- chart --}}
+<div class="row row-cols-1 row-cols-md-2 g-4">
+  <div class="col">
+    <div class="card p-4 shadow bg-body-tertiary rounded-4 bg-white p-3 border border-white">
+      <div class=" " ><canvas class=""  id="products"></canvas></div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card p-4 shadow bg-body-tertiary rounded-4 bg-white p-3 border border-white">
+      <div class=" " ><canvas id="doughnut-chart" width="70vw" height="35%"></canvas></div>
+    </div>
+  </div>
+  
+</div>
+
+<div class="my-3 py-3 dummydivforspace">
+  <div></div>
+</div>
+
+
+
+
+{{!-- docs --}}
+<div class="container mb-5 d-flex justify-content-around align-content-center text-center">    
+<div>    
 <p class="text-secondary">Total Product Sale Report&nbsp;<span class="text-dark fw-bolder"> Pdf file </span></p>
 <a class="btn btn-danger download text-light " href="/admin/report-Download">Download here</a>
-<p class="text-secondary mt-4">Total Product Sale Report &nbsp;<span class="text-dark fw-bolder">Excel file</span></p>
+</div>
+<div> 
+<p class="text-secondary ">Total Product Sale Report &nbsp;<span class="text-dark fw-bolder">Excel file</span></p>
 <a class="btn btn-success download text-light" href="/admin/excel-Data" >Download here</a>
 </div>
 </div>
+
+{{!-- navigation --}}
+<div class="row ">
+    <div class="col-lg-6 mb-4">
+        
+        <div class="card shadow bg-body-tertiary rounded-4 bg-white border border-white">
+            <img class="card-img-top bg-danger" src="" alt="">
+            
+            <div class="card-body">
+                <h5 class="card-title">User Management</h5>
+                <p class="card-text">
+                    Manage user access to your account.Add, edit and delete users.
+                </p>
+
+                <a href="/admin/users" class="btn btn-outline-primary btn-sm">
+                    Go to page
+                </a>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow bg-body-tertiary rounded-4 bg-white border border-white">
+            <img class="card-img-top" src="" alt="">
+
+            <div class="card-body">
+                <h5 class="card-title">Product Managemet</h5>
+                <p class="card-text">
+                    Manage products in your site.Add, edit and delete products.
+                </p>
+
+                <a href="/admin/products" class="btn btn-outline-primary btn-sm">
+                    Go to page
+                </a>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow bg-body-tertiary rounded-4 bg-white border border-white">
+            <img class="card-img-top" src="" alt="">
+
+            <div class="card-body">
+                <h5 class="card-title">Category management</h5>
+                <p class="card-text">
+                    Manage Category of each products.
+                </p>
+
+                <a href="/admin/category" class="btn btn-outline-primary btn-sm">
+                    Go to page
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</div>
+{{!-- !container --}}
+
+
+
+<div class="my-5 py-2 dummydivforspace">
+  <div></div>
+</div>
+
+<footer class="container-fluid text-lg-start" style="font-size:12px" >
+<div class="text-center text-black pb-5 fw-normal">
+  © 2023 Copyright:  
+  <a class="text-black text-decoration-none" href="#">ShopWine.com made with 
+    <span class="text-danger fs-6">❤</span> by - Neeraj </a>
+</div>
+</footer> 
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script src="/javascript/chart.js"></script>

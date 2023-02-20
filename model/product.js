@@ -1,37 +1,46 @@
-const mongoose= require('mongoose');
-const productSchema=new mongoose.Schema({
-    name:{
-      type: String,
-      required: true,
-    },
-    price:{
-      type:Number,
-      default:0, 
-      required: true,
-    },
-    image:{
-      type: String,
-      required: true,
-    },  
-    description:{
-      type: String,
-      required: true,
-    },
-    category:{
-      type: mongoose.Schema.Types.ObjectId,
-      ref:'Category',
-      required: true
-    },
-    isBlocked: { 
-      type: Boolean, 
-      default: false 
-    },
-    stock: {
-      type: Number,
-      required: [true, 'Stock cannot be empty']
-    },
-  })  
-  
-  const Product = mongoose.model('Product', productSchema);
+const mongoose = require('mongoose')
+const uniqueValidator = require('@ladjs/mongoose-unique-validator')
+const productSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, 'Product Name is a required field'],
+    unique: [true, 'Product Name already exists'],
+    trim: true
+  },
+  price: {
+    type: Number,
+    default: 0,
+    required: [true, 'Price is a required field'],
+    trim: true
+  },
+  image: {
+    type: String,
+    required: [true, 'Image is a required field']
+  },
+  description: {
+    type: String,
+    required: [true, 'Description is a required field']
+  },
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
+    required: [true, 'Category is a required field']
+  },
+  isBlocked: {
+    type: Boolean,
+    default: false
+  },
+  stock: {
+    type: Number,
+    required: [true, 'Stock cannot be empty']
+  }
+})
 
-  module.exports={Product}
+productSchema.pre('save', function (next) {
+  this.name = this.name.trim()[0].toUpperCase() + this.name.slice(1).toLowerCase()
+  next()
+})
+productSchema.plugin(uniqueValidator)
+const Product = mongoose.model('Product', productSchema)
+
+module.exports = { Product }
