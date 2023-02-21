@@ -13,7 +13,6 @@ router.get('/login', verifyLogout, userController.getLogin)
 router.get('/forgot', verifyLogout, userController.getForgotpass)
 router.get('/forgotOtp', verifyLogout, userController.getForgotPassOtp)
 router.get('/changepass', verifyLogout, userController.getChangePass)
-router.get('/shop', verifyLogin, userController.getShop)
 router.get('/singleProduct/:_id', verifyLogin, userController.getSingleProduct)
 router.get('/logout', verifyLogin, userController.logoutUser)
 // ------------------------get routes----------------------------//
@@ -51,5 +50,10 @@ router.get('/user-coupon', verifyLogin, userController.getCouponpage)
 router.post('/coupon', userController.applyCoupon)
 //= ============================Coupon Feature===========================================//
 
+router.get('/shop', verifyLogin, userController.getShop)
 router.post('/search', userController.searchProducts)
+router.get('/category/:_id', verifyLogin, userController.filterProducts)
+router.get('/sort/:_id', verifyLogin, userController.sortProducts)
+// router.post('/price', verifyLogin, userController.productPriceFilter)
+
 module.exports = router

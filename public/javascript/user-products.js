@@ -1,14 +1,5 @@
 
-const orderContainer = document.querySelector('.search')
-if (orderContainer) {
-  orderContainer.addEventListener('click', (e) => {
-    if (e.target.classList.contains('btn-srch')) {
-      console.log('click  works!!!')
-      searchProducts(e)
-    }
-  })
-}
-
+/* eslint-disable no-unused-vars */
 async function searchProducts (e) {
   console.log('search fnctn works!!')
   const url = '/search'

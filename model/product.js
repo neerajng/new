@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('@ladjs/mongoose-unique-validator')
+const paginate = require('mongoose-paginate-v2')
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -41,6 +42,7 @@ productSchema.pre('save', function (next) {
   next()
 })
 productSchema.plugin(uniqueValidator)
+productSchema.plugin(paginate)
 const Product = mongoose.model('Product', productSchema)
 
 module.exports = { Product }

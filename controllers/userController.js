@@ -1,5 +1,6 @@
 /* eslint-disable eqeqeq */
 const { ObjectId } = require('mongodb')
+const { Category } = require('../model/category')
 const { User } = require('../model/users')
 const { Product } = require('../model/product')
 const Order = require('../model/order')
@@ -458,19 +459,27 @@ module.exports = {
   },
 
   getShop: async (req, res) => {
-    const productList = await Product.find().populate('category')
+    const pageSize = 10
+    const page = parseInt(req.query.page) || 1
+    const skip = (pageSize * page) - pageSize
+
+    const products = await Product.find().populate('category')
+    const categories = await Category.find({ isBlocked: false })
+
+    const count = products.length
+    const productList = await Product.find().populate('category').skip(skip).limit(pageSize)
+
     // console.log(productList)
     if (!productList) {
       res.staus(500).json({ success: false })
     }
-    res.render('shop', { productList: req.session.productList ? req.session.productList : productList, search: req.session.search ? req.session.search : '' })
+    res.render('shop', { current: page, pages: Math.ceil(count / pageSize), categories, productList: req.session.productList ? req.session.productList : productList, search: req.session.search ? req.session.search : '' })
   },
   searchProducts: async (req, res) => {
     console.log(req.body.input)
     const searchTerm = req.body.input
     try {
       const productList = await Product.find({ name: { $regex: searchTerm, $options: 'i' } })
-      console.log(productList)
       req.session.search = searchTerm
       req.session.productList = productList
       return res.json({ redirect: ('/shop') })
@@ -478,7 +487,37 @@ module.exports = {
       res.status(500).send(error.message)
     }
   },
+  filterProducts: async (req, res) => {
+    try {
+      const id = await req.params._id
+      const categories = await Category.find({ isBlocked: false })
+      const productList = await Product.find({ isBlocked: false, category: id }).populate('category')
 
+      console.log(productList)
+      res.render('shop', { productList, categories })
+    } catch (e) {
+      console.log(e)
+    }
+  },
+  sortProducts: async (req, res) => {
+    try {
+      const categories = await Category.find({ isBlocked: false })
+      const id = req.params._id
+      const ascending = await Product.find().sort({ name: 1 })
+      const highPrice = await Product.find().sort({ price: -1 })
+      const lowPrice = await Product.find().sort({ price: 1 })
+
+      if (id === 'az') {
+        res.render('shop', { productList: ascending, categories })
+      } else if (id === 'hl') {
+        res.render('shop', { productList: highPrice, categories })
+      } else {
+        res.render('shop', { productList: lowPrice, categories })
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  },
   // ----------------------------------------------------------------//
 
   existUser: async (req, res, next) => {
