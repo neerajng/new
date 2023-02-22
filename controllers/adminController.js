@@ -535,8 +535,8 @@ module.exports = {
 
   getreportDownload: async (req, res) => {
     try {
-      const basePath = req.protocol + '://' + req.hostname + ':' + req.socket.localPort
-      // const basePath = 'https://shopwine.shop'
+      // const basePath = req.protocol + '://' + req.hostname + ':' + req.socket.localPort
+      const basePath = 'https://shopwine.shop'
       const browser = await puppeteer.launch()
       const page = await browser.newPage()
       const websiteUrl = `${basePath}/admin/generateTable`
