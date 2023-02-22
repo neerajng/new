@@ -78,9 +78,9 @@ module.exports = {
       if (req.session.message) {
         const message = req.session.message
         req.session.message = null
-        return res.render('adminAddproducts', { category, message })
+        return res.render('adminAddProducts', { category, message })
       } else {
-        return res.render('adminAddproducts', { category })
+        return res.render('adminAddProducts', { category })
       }
     } catch (e) {
       return res.status(404).render('page-not-found')
