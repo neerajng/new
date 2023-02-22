@@ -1,5 +1,4 @@
 /* eslint-disable */
-console.log("working");
 /**
  * ImageZoom Plugin
  * http://0401morita.github.io/imagezoom-plugin

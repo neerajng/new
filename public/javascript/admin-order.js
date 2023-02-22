@@ -21,7 +21,6 @@ async function deliverOrder (e) {
 async function cancelOrder (e) {
   const id = await e.target.dataset.url
   const url = `/admin/admin-order-cancel/${id}`
-  console.log(url)
   const res = await fetch(url, {
     method: 'PUT',
     credentials: 'same-origin',
@@ -37,7 +36,6 @@ async function cancelOrder (e) {
 async function returnOrder (e) {
   const orderId = await e.target.dataset.url
   const url = `/admin/admin-return-order/${orderId}`
-  console.log(url)
   const res = await fetch(url, {
       method: 'PUT',
       credentials: 'same-origin',

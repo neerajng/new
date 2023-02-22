@@ -40,8 +40,6 @@
         <option value="value">Choose...</option>
         {{#each categories}} 
         {{#if (eq isBlocked false)}}
-        {{!-- <option value="{{this._id}}" {{#if this._id}}selected{{/if}}>{{#if (eq this.name ../product.category.name)}}hi{{else}}hoy{{/if}}</option>  --}}
-        {{!-- <option value="{{this._id}}" >{{this._id}}--{{../product.category._id}}</option> --}}
         <option value="{{this._id}}" {{#if (eq ../product.category.id this.id)}}selected{{/if}}>{{this.name}}</option>
         {{/if}}
         {{/each}}        

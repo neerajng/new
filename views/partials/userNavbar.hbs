@@ -1,48 +1,53 @@
-<nav class="navbar navbar-expand-lg fixed-top mb-5 shadow bg-body-tertiary " style="background-image: linear-gradient(15deg, #13547a 0%, #80d0c7 100%);">
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top mb-5 pb-4 shadow" style="background-image: linear-gradient(15deg, #13547a 0%, #80d0c7 100%);">
   <div class="container-fluid">
+    <h2 class="text-white fw-bolder">ShopWine<i class="fas fa-wine-bottle"></i></h2>
 
-<h2 class="text-white fw-bolder">ShopWine<i class="fa-solid fa-wine-bottle"></i></h2>    <!-- Toggle button -->
-    <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <i class="fas fa-bars"></i>
+    <!-- Toggle button -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
     </button>
 
     <!-- Collapsible wrapper -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-auto">
-        
+
         <!-- Link -->
-        <li class="nav-item mr-auto">
-          <a class="nav-link text-black fw-bolder" href="/home">Home</a>
+        <li class="nav-item">
+          <a class="nav-link text-black fw-bolder fs-6" href="/home">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-black fw-bolder" href="/shop">Shop</a>
+          <a class="nav-link text-black fw-bolder fs-6" href="/shop">Shop</a>
         </li>
-        <li class="nav-item ml-auto">
-          <a class="nav-link text-black fw-bolder" href="#">About</a>
+        <li class="nav-item">
+          <a class="nav-link text-black fw-bolder fs-6" href="#">About</a>
         </li>
       </ul>
-      
 
       <!-- Icons -->
-      <ul class="navbar-nav d-flex flex-row me-5">       
+      <ul class="navbar-nav d-flex flex-row ms-4 me-5">
 
         <li class="nav-item me-3 me-lg-0">
           <a href="/getcart" class="nav-link text-black">
-          <i class="fas fa-shopping-cart"></i>
-          <span class="badge text-bg-danger"></span>
+            <i class="fas fa-shopping-cart"></i>
+            <span class="badge bg-danger text-white"></span>
           </a>
         </li>
-        
+
         <li class="nav-item me-3 me-lg-0">
-          <a class="nav-link text-black" href="/user-order"><i class="fa fa-user"></i></a>
+          <a class="nav-link text-black" href="/user-order">
+            <i class="fas fa-user"></i>
+          </a>
         </li>
         <li class="nav-item me-3 me-lg-0">
-          <a class="nav-link text-black" href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
+          <a class="nav-link text-black" href="/logout">
+            <i class="fas fa-sign-out-alt"></i>
+          </a>
         </li>
 
       </ul>
 
     </div>
+    <!-- Collapsible wrapper -->
   </div>
   <!-- Container wrapper -->
 </nav>

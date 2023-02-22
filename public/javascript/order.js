@@ -4,18 +4,14 @@
 const codBtn = document.querySelector('.btn-cod')
 
 if (codBtn) {
-  console.log(codBtn)
   codBtn.addEventListener('click', (e) => {
-    console.log('cod-click-works')
     createOrder(e)
   })
 }
 
 const razorbtn = document.querySelector('.btn-razor')
 if (razorbtn) {
-  console.log(razorbtn)
   razorbtn.addEventListener('click', (e) => {
-    console.log('razor click works')
     createOrder(e)
   })
 }
@@ -23,15 +19,11 @@ if (razorbtn) {
 // for creating order
 
 async function createOrder (e) {
-  console.log('fun works!')
   const url = '/order/create'
-  console.log(url)
   let methodofPayment
   if (e.target.classList.contains('btn-cod')) {
-    console.log('if works!!')
     methodofPayment = 'cash on delivery'
   } else if (e.target.classList.contains('btn-razor')) {
-    console.log('razor else works!!')
     methodofPayment = 'Razor pay'
   }
   const res = await fetch(url, {
@@ -48,9 +40,7 @@ async function createOrder (e) {
     })
   })
   const redirectPath = await res.json()
-  console.log(redirectPath)
   if (redirectPath.myOrder) {
-    console.log(' response redirecting works!!')
     const options = {
       key: 'rzp_test_eggyFCs0RAH55e', // Key ID
       amount: redirectPath.myOrder.amount * 100, // Amount is in paise
@@ -60,12 +50,10 @@ async function createOrder (e) {
         window.location.href = redirectPath.redirect
       }
     }
-    console.log(options)
     const rzp1 = new Razorpay(options)
     rzp1.open()
     e.preventDefault()
   } else {
-    console.log('Y')
     window.location.href = redirectPath.redirect
   }
 }
@@ -73,7 +61,6 @@ async function createOrder (e) {
 // edit address
 async function editAddress (e) {
   const addressId = await e.target.dataset.url
-  console.log(addressId)
   const formData = new FormData()
   formData.append('houseName', document.getElementById('houseName').value)
   formData.append('phone', document.getElementById('phone').value)
@@ -94,7 +81,6 @@ async function editAddress (e) {
   })
     .then(response => response.json())
     .then(response => {
-      console.log('working')
       window.location.href = response.redirect
     })
 }

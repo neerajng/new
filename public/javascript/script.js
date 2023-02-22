@@ -2,7 +2,6 @@
 /* eslint-disable no-useless-escape */
 
 function signup () {
-  console.log('signup')
   const fname = document.getElementById('fname').value
   const lname = document.getElementById('lname').value
 

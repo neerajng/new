@@ -2,11 +2,8 @@
 const basepath = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`
 async function deletecat (e) {
   e.preventDefault()
-  console.log(e)
-  console.log('working')
   const id = e.target.dataset.url
   const url = `${basepath}/admin/category/delete/${id}`
-  console.log(url)
 
   fetch(url, {
     method: 'PUT',
@@ -18,7 +15,6 @@ async function deletecat (e) {
   })
     .then(response => response.json())
     .then(response => {
-      console.log('wokin100')
       window.location.href = response.redirect
     })
 }

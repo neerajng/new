@@ -11,7 +11,7 @@ const xlsx = require('xlsx')
 module.exports = {
   getAdminLogin: async (req, res) => {
     res.locals.prelogin = true
-    res.render('adminLogin')
+    return res.render('adminLogin')
   },
   getAdminHome: async (req, res) => {
     try {
@@ -28,10 +28,9 @@ module.exports = {
       const totalCustomer = await User.countDocuments()
       const totalProduct = await Product.countDocuments()
       const totalOrder = await Order.countDocuments()
-      console.log(totalProduct)
-      res.render('adminHome', { totalIncome, totalCustomer, totalProduct, totalOrder })
+      return res.render('adminHome', { totalIncome, totalCustomer, totalProduct, totalOrder })
     } catch (e) {
-      console.log(e)
+      return res.status(404).render('page-not-found')
     }
   },
   getAdminUser: async (req, res) => {
@@ -39,17 +38,16 @@ module.exports = {
       const users = await User.find()
       return res.render('adminUsers', { users })
     } catch (err) {
-      console.log(err)
+      return res.status(404).render('page-not-found')
     }
   },
 
   getAdminCategory: async (req, res) => {
     try {
       const categoryList = await Category.find()
-      res.render('adminCategory', { categoryList })
+      return res.render('adminCategory', { categoryList })
     } catch (e) {
-      console.log(e)
-      res.render('adminCategory')
+      return res.render('adminCategory')
     }
   },
 
@@ -58,22 +56,21 @@ module.exports = {
       if (req.session.message) {
         const message = req.session.message
         req.session.message = null
-        res.render('adminAddCategory', { message })
+        return res.render('adminAddCategory', { message })
       } else {
-        res.render('adminAddCategory')
+        return res.render('adminAddCategory')
       }
     } catch (e) {
-      console.log(e)
+      return res.status(404).render('page-not-found')
     }
   },
 
   getAdminProduct: async (req, res) => {
-    console.log('getAdminProduct listing')
     const productList = await Product.find().populate('category')
     if (!productList) {
-      res.status(500).json({ success: false })
+      return res.status(500).json({ success: false })
     }
-    res.render('adminProducts', { productList })
+    return res.render('adminProducts', { productList })
   },
   getAddProducts: async (req, res) => {
     try {
@@ -81,38 +78,36 @@ module.exports = {
       if (req.session.message) {
         const message = req.session.message
         req.session.message = null
-        res.render('adminAddproducts', { category, message })
+        return res.render('adminAddproducts', { category, message })
       } else {
-        res.render('adminAddproducts', { category })
+        return res.render('adminAddproducts', { category })
       }
     } catch (e) {
-      console.log(e)
+      return res.status(404).render('page-not-found')
     }
   },
   getUpdateProduct: async (req, res) => {
     try {
-      console.log('getUpdateProduct')
       if (req.session.message) {
         const id = req.params._id
         const product = await Product.findById(id).populate('category')
         const categories = await Category.find()
         const message = req.session.message
         req.session.message = null
-        res.render('adminUpdateProducts', { categories, product, message })
+        return res.render('adminUpdateProducts', { categories, product, message })
       } else {
         const id = req.params._id
         const product = await Product.findById(id).populate('category')
         const categories = await Category.find()
-        res.render('adminUpdateProducts', { categories, product })
+        return res.render('adminUpdateProducts', { categories, product })
       }
     } catch (e) {
-      res.render('adminUpdateProducts', { message: e })
+      return res.render('adminUpdateProducts', { message: e })
     }
   },
 
   // admin orders page
   getAdminOrder: async (req, res) => {
-    console.log('admin-order works!!')
     const orders = await Order.find({}).populate('user').sort({ createdAt: -1 })
     const ordersV = await Order.find().populate('orderItems.id').sort({ createdAt: -1 })
     const allOrderItems = []
@@ -125,14 +120,12 @@ module.exports = {
     for (let i = 0; i <= orderItemsArray.length; i++) {
       arr.push(orderItemsArray[i])
     }
-    res.render('adminOrders', { order: orders, arrs: arr })
+    return res.render('adminOrders', { order: orders, arrs: arr })
   },
 
   deliverOrder: async (req, res) => {
-    console.log('deliver order works!')
     try {
       const orderId = await req.params._id
-      console.log('deliver ' + orderId)
       const order = await Order.find({ _id: orderId })
       order[0].isCancelled = false
       order[0].isDelivered = true
@@ -148,7 +141,6 @@ module.exports = {
         { $group: { _id: '$_id', orderItems: { $push: '$results' } } }
       ])
       const arr = orderAggr[0].orderItems.flat()
-      console.log(arr)
       if (order[0].version !== 0) {
         for (const item of arr) {
           const product = await Product.findById(item._id)
@@ -160,9 +152,9 @@ module.exports = {
         }
       }
 
-      res.json({ redirect: '/admin/orders' })
+      return res.json({ redirect: '/admin/orders' })
     } catch (err) {
-      console.log(err)
+      return res.status(404).render('page-not-found')
     }
   },
 
@@ -186,7 +178,6 @@ module.exports = {
         { $group: { _id: '$_id', orderItems: { $push: '$results' } } }
       ])
       const arr = orderAggr[0].orderItems.flat()
-      console.log(arr)
 
       if (order[0].version !== 0 && order[0].cancelVersion !== 0) {
         for (const item of arr) {
@@ -199,14 +190,13 @@ module.exports = {
         }
       }
 
-      res.json({ redirect: '/admin/orders' })
+      return res.json({ redirect: '/admin/orders' })
     } catch (err) {
-      console.log(err)
+      return res.status(404).render('page-not-found')
     }
   },
 
   returnOrder: async (req, res) => {
-    console.log('return order works!')
     try {
       const orderId = req.params._id
       await Order.find({ _id: orderId })
@@ -221,8 +211,6 @@ module.exports = {
         { $group: { _id: '$_id', orderItems: { $push: '$results' } } }
       ])
       const arr = orderAggr[0].orderItems.flat()
-      console.log(arr)
-
       for (const item of arr) {
         const product = await Product.findById(item._id)
         product.stock += item.quantity
@@ -232,16 +220,14 @@ module.exports = {
         await product.save()
       }
 
-      res.json({ redirect: '/admin/orders' })
+      return res.json({ redirect: '/admin/orders' })
     } catch (err) {
-      console.log(err)
+      return res.status(404).render('page-not-found')
     }
   },
 
   viewAdminOrder: async (req, res) => {
     const id = req.params._id
-    console.log(id)
-
     const order = await Order.aggregate([
       { $match: { _id: ObjectId(id) } },
       { $unwind: '$orderItems' },
@@ -252,16 +238,14 @@ module.exports = {
       { $group: { _id: '$_id', orderItems: { $push: '$results' } } }
     ])
     const arr = await order[0].orderItems.flat()
-    console.log(arr)
 
-    res.render('viewAdminOrder', { arr })
+    return res.render('viewAdminOrder', { arr })
   },
 
-  // -------------------------------
+  // ------------------------------- //
 
   // for chart
   getchartData: async (req, res, next) => {
-    console.log('getchartData controller works')
     try {
       const productWiseSale = await Order.aggregate(
         [
@@ -287,14 +271,13 @@ module.exports = {
         ]
       )
 
-      console.log(productWiseSale)
       return res.json({ productWiseSale })
     } catch (err) {
-      console.log(err)
+      return res.status(404).render('page-not-found')
     }
   },
   showChart: (req, res) => {
-    res.render('adminChart')
+    return res.render('adminChart')
   },
   getSales: async (req, res) => {
     const result = await Order.aggregate([
@@ -309,7 +292,7 @@ module.exports = {
     const totalCustomer = await User.countDocuments()
     const totalProduct = await Product.countDocuments()
     const totalOrder = await Order.countDocuments()
-    res.render('adminSales', { totalIncome, totalCustomer, totalProduct, totalOrder })
+    return res.render('adminSales', { totalIncome, totalCustomer, totalProduct, totalOrder })
   },
   // --------------------------------------------------------//
   LoginAdmin: (req, res) => {
@@ -317,12 +300,8 @@ module.exports = {
     return res.redirect('/admin/home')
   },
   blockUser: async (req, res) => {
-    console.log('007')
     const id = req.params._id
     const user = await User.findById(id)
-    console.log(id)
-    console.log(user._id)
-    console.log(req.session.user)
     if (user.isBlocked) {
       try {
         await User.findOneAndUpdate({ _id: id }, {
@@ -334,7 +313,7 @@ module.exports = {
           redirect: '/admin/users'
         })
       } catch (error) {
-        console.log(error)
+        return res.status(404).render('page-not-found')
       }
     } else {
       try {
@@ -352,12 +331,13 @@ module.exports = {
           redirect: '/admin/users'
         })
       } catch (error) {
+        return res.status(404).render('page-not-found')
       }
     }
   },
   LogoutAdmin: (req, res) => {
     req.session.admin = null
-    res.redirect('/admin/login')
+    return res.redirect('/admin/login')
   },
   // ----------------------------------------------------------------//
   addCategory: async (req, res) => {
@@ -368,9 +348,8 @@ module.exports = {
         color: req.body.color
       })
       await category.save()
-      res.redirect('/admin/category')
+      return res.redirect('/admin/category')
     } catch (e) {
-      console.log(e)
       const index = e.message.indexOf('name:') + 6
       const message = e.message.substring(index)
       if (e.code === 11000) {
@@ -378,16 +357,13 @@ module.exports = {
       } else {
         req.session.message = message
       }
-      res.redirect('/admin/addcategory')
+      return res.redirect('/admin/addcategory')
     }
   },
 
   deleteCategory: async (req, res) => {
-    console.log('1')
     const id = req.params._id
     const category = await Category.findById(id)
-    console.log(id)
-    console.log(category)
     if (category.isBlocked) {
       try {
         await Category.findOneAndUpdate({ _id: id }, {
@@ -399,7 +375,7 @@ module.exports = {
           redirect: '/admin/category'
         })
       } catch (error) {
-        console.log(error)
+        return res.status(404).render('page-not-found')
       }
     } else {
       try {
@@ -412,6 +388,7 @@ module.exports = {
           redirect: '/admin/category'
         })
       } catch (error) {
+        return res.status(404).render('page-not-found')
       }
     }
   },
@@ -419,12 +396,9 @@ module.exports = {
   addProduct: async (req, res) => {
     try {
       const category = await Category.findById(req.body.category)
-      console.log(category)
       if (!category) return res.status(400).send('Invalid Category')
-
       const fileName = await req.file.filename
-      console.log(fileName)
-      const basePath = `${req.protocol}://${req.get('host')}/uploads/`
+      const basePath = '/uploads/'
       let product = new Product({
         name: req.body.name,
         price: req.body.price,
@@ -433,13 +407,11 @@ module.exports = {
         category: req.body.category,
         stock: req.body.stock
       })
-
       product = await product.save()
 
       if (!product) { return res.status(500).send('The product cannot be created') }
       res.redirect('/admin/products')
     } catch (e) {
-      console.log(e)
       const index = e.message.indexOf('Error:')
       const message = e.message.substring(index)
       if (e.code === 11000) {
@@ -447,18 +419,17 @@ module.exports = {
       } else {
         req.session.message = message
       }
-      res.redirect('/admin/addproduct')
+      return res.redirect('/admin/addproduct')
     }
   },
 
   editProduct: async (req, res) => {
     try {
-      const basePath = `${req.protocol}://${req.get('host')}/uploads/`
+      const basePath = '/uploads/'
       const fileName = await req.file.filename
       const img = `${basePath}${fileName}`
       const id = await req.params._id
-      console.log(id)
-      const product = await Product.findByIdAndUpdate(
+      await Product.findByIdAndUpdate(
         id,
         {
           name: req.body.name,
@@ -470,10 +441,8 @@ module.exports = {
         },
         { new: true, runValidators: true }
       )
-      console.log(product)
       return res.status(200).json({ redirect: '/admin/products/' })
     } catch (e) {
-      console.log(e)
       const index = e.message.indexOf('Error:')
       const message = e.message.substring(index)
       if (e.code === 11000) {
@@ -488,11 +457,8 @@ module.exports = {
   },
 
   deleteProduct: async (req, res) => {
-    console.log('007')
     const id = req.params._id
     const product = await Product.findById(id)
-    console.log(id)
-    console.log(product)
 
     if (product.isBlocked) {
       try {
@@ -505,7 +471,7 @@ module.exports = {
           redirect: '/admin/products'
         })
       } catch (error) {
-        console.log(error)
+        res.status(404).render('page-not-found')
       }
     } else {
       try {
@@ -527,7 +493,7 @@ module.exports = {
       const coupon = await Coupon.find({})
       res.render('adminCoupon', { coupon })
     } catch (err) {
-      console.log(err)
+      res.status(404).render('page-not-found')
     }
   },
 
@@ -545,11 +511,10 @@ module.exports = {
         discountPercentage: parseInt(discountPercentage),
         isAvailable: true
       })
-      console.log(coupon)
       await coupon.save()
       res.redirect('/admin/coupons')
     } catch (err) {
-      console.log(err)
+      res.status(404).render('page-not-found')
     }
   },
 
@@ -557,14 +522,13 @@ module.exports = {
   updateCoupon: async (req, res) => {
     const id = req.params._id
     try {
-      console.log('block works')
       const coupon = await Coupon.findById({ _id: id })
       const isAvailable = coupon.isAvailable
       coupon.isAvailable = !isAvailable
       await coupon.save()
       res.json({ redirect: '/admin/coupons' })
     } catch (e) {
-      console.log(e)
+      res.status(404).render('page-not-found')
     }
   },
   // ----------------------------Sales Report----------------------------------//
@@ -572,6 +536,7 @@ module.exports = {
   getreportDownload: async (req, res) => {
     try {
       const basePath = req.protocol + '://' + req.hostname + ':' + req.socket.localPort
+      // const basePath = 'https://shopwine.shop'
       const browser = await puppeteer.launch()
       const page = await browser.newPage()
       const websiteUrl = `${basePath}/admin/generateTable`
@@ -585,7 +550,7 @@ module.exports = {
       res.download('result.pdf')
       await browser.close()
     } catch (e) {
-      console.log(e)
+      res.status(404).render('page-not-found')
     }
   },
 
@@ -613,7 +578,6 @@ module.exports = {
         }
       ]
     )
-    console.log(productSale)
     res.render('productPdf', { productSale })
   },
 
@@ -649,7 +613,6 @@ module.exports = {
       }
       saleReport.push(excel)
     })
-    console.log(saleReport)
     const newWB = xlsx.utils.book_new()
     const newWS = xlsx.utils.json_to_sheet(saleReport)
     xlsx.utils.book_append_sheet(newWB, newWS, 'SalesReport')

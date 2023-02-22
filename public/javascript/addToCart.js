@@ -1,11 +1,10 @@
 /* eslint-disable no-unused-vars */
 const basepath = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`
-/// addToCart
+// addToCart
 async function addToCart (event) {
   event.preventDefault()
   const id = await event.target.dataset.url
   const url = `${basepath}/add-to-cart/${id}`
-  console.log(url)
 
   await fetch(url, {
     method: 'POST',
@@ -18,7 +17,6 @@ async function addToCart (event) {
     .then(response => { response.json() })
     .then(response => {
       const toastTrigger = document.getElementById(`liveToastBtn-${id}`)
-      console.log(toastTrigger)
       const toastLiveExample = document.getElementById('liveToast')
       // eslint-disable-next-line no-undef
       const toast = new bootstrap.Toast(toastLiveExample)
@@ -26,13 +24,11 @@ async function addToCart (event) {
     })
 }
 
-/// incBtn
+// incBtn
 async function incBtn (event) {
   event.preventDefault()
   const productId = await event.target.dataset.url
-  console.log(productId)
   const url = `${basepath}/inc/${productId}`
-  console.log(url)
   await fetch(url, {
     method: 'PUT',
     credentials: 'same-origin',
@@ -42,18 +38,14 @@ async function incBtn (event) {
   })
     .then(response => response.json())
     .then(response => {
-      console.log('working100')
       window.location.href = response.redirect
     })
 }
 
-/// decBtn
+// decBtn
 async function decBtn (event) {
-  console.log('decrement fetch works!!')
   const productId = await event.target.dataset.url
-  console.log(productId)
   const url = `${basepath}/dec/${productId}`
-  console.log(url)
   await fetch(url, {
     method: 'PUT',
     credentials: 'same-origin',
@@ -63,18 +55,14 @@ async function decBtn (event) {
   })
     .then(response => response.json())
     .then(response => {
-      console.log('working100')
       window.location.href = response.redirect
     })
 }
 
-/// deleteCart
+// deleteCart
 async function deleteCart (e) {
-  console.log('Delete')
   const id = e.target.dataset.url
-  console.log(id)
   const url = `${basepath}/delete/${id}`
-  console.log(url)
   await fetch(url, {
     method: 'DELETE',
     credentials: 'same-origin',
@@ -84,7 +72,6 @@ async function deleteCart (e) {
   })
     .then(response => response.json())
     .then(response => {
-      console.log('working100')
       window.location.href = response.redirect
     })
 }

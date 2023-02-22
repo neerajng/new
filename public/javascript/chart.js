@@ -4,8 +4,6 @@
 getChart()
 async function getChart() {
   const url = '/admin/chart'
-  console.log(url)
-  console.log('getchart() works!!')
 
   const res = await fetch(url, {
     method: 'POST',
@@ -14,9 +12,7 @@ async function getChart() {
       'Content-Type': 'application/json'
     }
   })
-  // console.log('res req sent to contrller');
   const chartData = await res.json()
-  console.log(chartData)
 
   // product data from controller
   new Chart(
@@ -63,5 +59,4 @@ async function getChart() {
       }
     }
   })
-  console.log('chart worked!')
 }
