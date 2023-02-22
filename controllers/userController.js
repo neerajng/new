@@ -407,20 +407,13 @@ module.exports = {
   },
 
   getShop: async (req, res) => {
-    const pageSize = 10
-    const page = parseInt(req.query.page) || 1
-    const skip = (pageSize * page) - pageSize
-
-    const products = await Product.find().populate('category')
     const categories = await Category.find({ isBlocked: false })
-
-    const count = products.length
-    const productList = await Product.find().populate('category').skip(skip).limit(pageSize)
+    const productList = await Product.find().populate('category')
 
     if (!productList) {
       return res.staus(500).json({ success: false })
     }
-    return res.render('shop', { current: page, pages: Math.ceil(count / pageSize), categories, productList: req.session.productList ? req.session.productList : productList, search: req.session.search ? req.session.search : '' })
+    return res.render('shop', { categories, productList: req.session.productList ? req.session.productList : productList, search: req.session.search ? req.session.search : '' })
   },
   searchProducts: async (req, res) => {
     const searchTerm = req.body.input

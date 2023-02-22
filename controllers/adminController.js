@@ -537,7 +537,8 @@ module.exports = {
     try {
       // const basePath = req.protocol + '://' + req.hostname + ':' + req.socket.localPort
       const basePath = 'https://shopwine.shop'
-      const browser = await puppeteer.launch()
+      // const browser = await puppeteer.launch()
+      const browser = await puppeteer.launch({ executablePath: '/usr/bin/chromium-browser' })
       const page = await browser.newPage()
       const websiteUrl = `${basePath}/admin/generateTable`
       await page.goto(websiteUrl, { waitUntil: 'networkidle0' })
